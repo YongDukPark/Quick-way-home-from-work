@@ -1,0 +1,56 @@
+포트열기 순서
+
+설정 명령어 iptables를 사용해 포트 열수도 있음
+
+
+
+방화벽 설정 정보 확인 (root 계정으로 진행해야함)
+iptables -nL
+
+1. 특정포트 외부에서 접속할 수 있도록 열기 (외부에서 접속할 수 있도록 포트 OPEN)
+아래는 외부에서 들어오는(INBOUND) TCP포트 12345의 연결을 받아들인다는 규칙을 1번 방화벽 규칙으로 추가한다는 의미이다.
+
+1.1 TCP PORT일 경우
+# iptables -I INPUT 1 -p tcp --dport 12345 -j ACCEPT
+
+1.2 UDP PORT일 경우
+# iptables -I INPUT 1 -p udp --dport 12345 -j ACCEPT
+
+-I: 새로운 규칙을 추가한다.
+-p: 패킷의 프로토콜을 명시한다.
+-j: 규칙에 해당되는 패킷을 어떻게 처리할지를 정한다. 
+※ 내부에서 외부로 나갈 수 있도록 포트 열기
+
+
+# iptables -I OUTPUT 1 -p tcp --dport 9002 -j ACCEPT
+# iptables -I OUTPUT 1 -p udp --dport 9002 -j ACCEPT
+
+2. 추가한 설정 조회
+# iptables -L -v
+
+-L: 규칙을 출력
+-v: 자세히 
+ 
+
+3. 추가한 설정 삭제
+a) 추가한 규칙의 번호로 삭제하는 방법과 
+b) 추가했을 때의 명령어에서 "-I"를 "-D"로 바꾸어 주는 방법이 있다.
+
+a) 규칙번호로 삭제
+# iptables -D INPUT 1
+
+b) 추가한 규칙으로 삭제
+# iptables -D INPUT -p tcp --dport 12345 -j ACCEPT
+# iptables -D INPUT -p udp --dport 12345 -j ACCEPT
+
+4. 변경사항 저장
+# service iptables save
+# /etc/init.d/iptables restart
+
+방화벽 활성화&비활성화
+
+1. 켜기
+# /etc/init.d/iptables start
+
+2. 끄기
+# /etc/init.d/iptables stop

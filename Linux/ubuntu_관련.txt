@@ -1,0 +1,25 @@
+명령어 꿀팁
+
+로그 확인용
+tail -f 파일명.확장자
+
+서버 확인하는 방법
+ps -ef | grep [입력]
+
+포트번호 확인용
+
+기본 확인
+netstat -nap
+
+열려있는 포트번호 확인
+netstat -nap | grep LISTEN
+
+특정 포트번호 확인
+netstat -nap | grep 포트번호
+
+ubuntu 서버접속
+ssh 유저명@ip주소
+ -i 로 key를 추가해서 사용 가능
+ex
+ssh -i 나는야멋쟁이키.cer 나는야멋쟁이유저@나는야멋쟁이ip
+
