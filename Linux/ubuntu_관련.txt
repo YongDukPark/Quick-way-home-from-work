@@ -161,6 +161,14 @@ firewall-cmd --reload
 -- 사용 가능한 모든 서비스/포트 번호 출력
 firewall-cmd --list-all
 
+-- 일반적인 커널에 대한 정보
+uname -a
+
+-- 리눅스 버전 확인 명령어
+cat /etc/redhat-release
+
+-- bit 확인 명령어
+getconf LONG_BIT
 
 
 ※permission 문제가 발생하는 경우가 있습니다.
