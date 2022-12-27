@@ -162,10 +162,22 @@ firewall-cmd --reload
 firewall-cmd --list-all
 
 -- 일반적인 커널에 대한 정보
+-- Linux ubuntu 만 되고있음
 uname -a
 
 -- 리눅스 버전 확인 명령어
+--centOS 는 이상없이 되는데 Linux ubuntu 는 안된다.
+--참고 일단 centOS는 레드햇 제휴로 개발한 컴퓨터 운영체제이다. 그래서 사용 불가한듯
+
 cat /etc/redhat-release
+
+--※우분투 버전 확인	****** 
+--Ubuntu 16.04 이상 버전에서만 가능
+cat /etc/os-release
+
+--이것도 ubuntu 버전 확인하는 방법임
+lsb_release -a
+
 
 -- bit 확인 명령어
 getconf LONG_BIT
