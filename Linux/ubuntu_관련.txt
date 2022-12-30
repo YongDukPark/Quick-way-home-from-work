@@ -217,7 +217,6 @@ lsb_release -a
 -- bit 확인 명령어
 getconf LONG_BIT
 
-
-※permission 문제가 발생하는 경우가 있습니다.
-
-이부분은 한번 찾아보시면서 보면 좋으실거같습니다.
+<ip주소 확인>
+	hostname -I
+</ip주소 확인>

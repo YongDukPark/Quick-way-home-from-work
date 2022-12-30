@@ -39,4 +39,6 @@ mysql
 	https://docs.google.com/document/d/1ziorMSedMiltyehi86Dl3M8NcZwj7vFw5qbhpo5dEWg/edit 이쪽 참고
 </날짜 추출방식>
 
-
+<최근 데이터 하나 가져오기>
+	SELECT * FROM "TABLE NAME" ORDER BY "COLUMN NAME" DESC LIMIT 1
+</최근 데이터 하나 가져오기>
