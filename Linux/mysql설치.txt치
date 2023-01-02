@@ -1,0 +1,109 @@
+<설치 실패>  
+	설치할 디렉토리 진입
+	cd /usr/local/sr
+
+	my sql 설치
+	218  wget http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.28.tar.gz
+
+	파일 실행
+	221  tar xzvf mysql-5.6.28.tar.gz
+
+	디렉토리 진입
+	223  cd mysql-5.6.28
+
+	그룹 생성
+	230  groupadd testmysql
+
+	그룹기반 시스템 로그인이 불가하며 홈디렉터리를 제외
+	-- 하여 mysql 계정 생성
+	233  useradd -g testmysql -M -s /bin/false testmysql
+
+	mysql 설치에 필요한 필수 패키지 사전 설치 하려는데 이게 왜 안되는겨
+	234  yum install -y cmake bison gcc gcc-c++ ncurses-deve
+</설치 실패>
+
+
+
+<설치 - CentOS8 기준>
+	1. 최하단 디렉토리로 가서 아래 명령어 실행 
+	sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el8-4.noarch.rpm
+
+		안될경우 - 그러나 이건 일시적인 해결방법이라 그리 추천하는 방식은 아니다 난 이거로 해결하긴했다.
+		sudo sed -i -e "s|mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-*
+		sudo sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-*
+
+		정확한 정보를 위해서는
+		https://confluence.curvc.com/pages/releaseview.action?pageId=98042923
+		해당주소 확인 요망
+
+	2. 헤당 명령어로 정상적으로 설치되었는지 확인
+	sudo yum repolist enabled | grep "mysql.*-community.*"
+	
+	3. 기존 MySQL 패키지 비 활성화
+	아까 봤던 CentOS의 Repository의 mysql-server 패키지로 인하여 방금 설치한 레파지토리의 패키지가 설치가 되지 않는다. 그러므로 기존 패키지를 Disable 시킨다.
+	sudo yum module disable mysql
+	위 명령어 치면 Y or N가 나오는데 우리는 진행시킬거니 Y해주자
+	
+	4. mySQL 커뮤니티 설치 Yum을 이용해서 mysql-community-server패키지를 설치한다.
+	sudo yum install mysql-community-server
+	이후 필요에 맞게 진행하면 되고 나는 전부다 y를 진행했따.
+	
+	합계                                                                                                                                                                                                          11 MB/s |  87 MB     00:08
+	MySQL 8.0 Community Server                                                                                                                                                                                   3.0 MB/s | 3.1 kB     00:00
+	GPG키 0x3A79BD29 가져오는 중:
+	사용자 ID : "MySQL Release Engineering <mysql-build@oss.oracle.com>"
+	지문: 859B E8D7 C586 F538 430B 19C2 467B 942D 3A79 BD29
+	출처 : /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql-2022
+	진행 할 까요? [y/N]: y
+	키 가져오기에 성공했습니다
+	MySQL 8.0 Community Server                                                                                                                                                                                   1.9 MB/s | 1.9 kB     00:00
+	GPG키 0x5072E1F5 가져오는 중:
+	사용자 ID : "MySQL Release Engineering <mysql-build@oss.oracle.com>"
+	지문: A4A9 4068 76FC BD3C 4567 70C8 8C71 8D3B 5072 E1F5
+	출처 : /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+	진행 할 까요? [y/N]: y
+
+	설치가 완료되면 위같이 나온다.
+	+++ 추후 설치상태 확인시 sudo systemctl status mysqld 이 명령어를 사용하면 된다.
+	+++ 추후 sudo yum install mysql-community-server 이거로 동일하게 설치확인도 가능함 그러나 비추천
+	
+	5. mySQL 시작
+	sudo systemctl start mysqld
+	
+	centOS7 이후 기준
+	++끄기
+	systemctl stop mysqld
+	++재시작
+	systemctl restart mysqld
+	++상태확인
+	systemctl status mysqld
+	
+	ubuntu 랑 CnetOS6  아니면 이전? 은
+	service mysql ??? (??? 여기 위치에 start, stop, restart, status를 넣어서 사용한다.)
+	
+	6. 초기 비밀번호 확인방법
+	sudo grep 'temporary password' /var/log/mysqld.log
+	이거는 설치할때마다 랜덤하게 생성된다.
+	ex ) 2023-01-02T01:52:13.084690Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: u20Ucl-tDO,1
+																														이놈이 초기 비밀번호이다.
+	7. 비밀번호 변경
+	 7-1 mysql -uroot -p
+	 이 명령어를 입력하고 아까 확인한 초기 비밀번호를 입력하면 접속이 된다.
+	 
+	 7-1 ALTER USER 'root'@'localhost' IDENTIFIED BY '사용할 비번';
+	 쿼리문 입력 비번 설정시 정책 요구사항에 맞춰 진행해야함 대소문자와 숫자 및 특수문자가 들어가야하는거로 확인
+	 ALTER USER 'root'@'localhost' IDENTIFIED BY 'Password0000!';
+	 
+	 자세한 내용 참고
+	 https://www.lesstif.com/dbms/mysql-8-password-policy-89555994.html
+	 
+	8. 나가기 
+	exit
+	
+	***기본 설치경로
+	/var/lib/mysql/
+	설치경로 확인 방법 2가지
+	1. ps aux | grep mysql
+	2. whereis mysql
+	
+</설치>
