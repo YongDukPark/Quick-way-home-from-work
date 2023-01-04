@@ -1,0 +1,87 @@
+이놈 특징 
+1. 파티션 테이블에는 왜래 키를 설정x (부모 테이블로서의 역할만 됨)
+2. 단독으로 사용되는 테이블에만 파티션을 설정 할 수 있다.
+3. 스토어드 프로시저, 스토어드 함수, 사용자 변수 등을 파티션 식에 사용할 수 없다.
+4. 임시 테이블(with)은 파티션을 사용할 수 없다.
+5. 파티션 키에는 일부 함수만 사용할 수 있다.
+6. 레인지 파티션은 숫자형 연속된 범위를 사용하고
+7. 리스트 파티션은 숫자형 또는 문자형 연속되지 않은 값(지역, 혈액형 등)을 사용한다.
+따라서 리스트 파티션은 MAXVALUE개념이 존재하지 않는다.
+
+
+
+
+CREATE TABLE DATETIME_DB_PYD_PARTITISON(
+	FULL_DATETIME TIMESTAMP NOT NULL,   
+	LOG_YEAR CHAR(4),
+	LOG_MONTH CHAR(2),
+	LOG_DAY CHAR(2),
+	LOG_HOUR CHAR(2),
+	LOG_MIN CHAR(2),
+	LOG_SEC CHAR(2),
+	MATCH_YN CHAR(1)
+) partition by range(LOG_DAY)(
+  partition part1 values less than (10),
+  partition part2 values less than (20),
+  partition part3 values less than MAXVALUE
+);
+
+DROP table DATETIME_DB_PYD_PARTITISON;
+
+
+-- 테이블과 파티션 만들기
+CREATE TABLE DATETIME_DB_PYD_PARTITISON(
+	FULL_DATETIME TIMESTAMP NOT NULL,   
+	LOG_YEAR CHAR(4),
+	LOG_MONTH CHAR(2),
+	LOG_DAY CHAR(2),
+	LOG_HOUR CHAR(2),
+	LOG_MIN CHAR(2),
+	LOG_SEC CHAR(2),
+	MATCH_YN CHAR(1)
+) partition by range(UNIX_TIMESTAMP(FULL_DATETIME))(
+  partition part1 values less than (UNIX_TIMESTAMP('2023-01-01 00:00:00')),
+  partition part2 values less than (UNIX_TIMESTAMP('2023-01-02 00:00:00')),
+  partition part3 values less than (UNIX_TIMESTAMP('2023-01-03 00:00:00')),
+  partition part4 values less than MAXVALUE
+);
+
+
+-- 데이터 넣기
+insert into DATETIME_DB_PYD_PARTITISON select FULL_DATETIME, LOG_YEAR, LOG_MONTH, LOG_DAY, LOG_HOUR, LOG_MIN, LOG_SEC, MATCH_YN from DATETIME_DB_PYD;
+
+select * from DATETIME_DB_PYD_PARTITISON where FULL_DATETIME >= '2023-01-01 00:00:00' ;
+
+-- 파티션 확인 내부 로우가 몇개가 있는지 확인도 가능하다.
+select table_schema, table_name, partition_name, partition_ordinal_position, table_rows
+from information_schema.partitions
+where table_name = 'DATETIME_DB_PYD_PARTITISON' ;
+
+-- 어떤 파티션에서 뒤지는지 알수 있는 방법이다 하지만 안된다 지금 왜그럴까? 밑에거는 된다 5.7 버전부터는 EXPLAIN 으로 가능하다.
+-- EXPLAIN PARTITIONS select * from DATETIME_DB_PYD_PARTITISON where FULL_DATETIME >= '2023-01-04 00:00:00' ;
+EXPLAIN select * from DATETIME_DB_PYD_PARTITISON where FULL_DATETIME >= '2023-01-02 00:00:00' ;
+
+-- 파티션 쪼개기	나머지값에서 더 세분화해서 쪼개는거임 근데 이게 그 ,,, 데이터가 다 넘어가버렸다 ..
+alter table DATETIME_DB_PYD_PARTITISON
+reorganize partition part4 into (
+  partition part4 values less than (UNIX_TIMESTAMP('2023-01-04 00:00:00')), -- 파티션4를 더 쪼갰다.
+  partition part5 values less than MAXVALUE	-- 나머지값에서 더 쪼개는거니 괜춘하다.
+) ;
+ 
+-- 파티션 작업된 테이블 적용 실행은 되나 잘 모르겠다.
+optimize table partTbl; 
+
+-- 파티션 합치기
+alter table DATETIME_DB_PYD_PARTITISON
+reorganize partition part4, part5 into (
+  -- part4와 part5 파티션을 합쳐서 새로운 파티션 part12를 만든다.
+  partition part4 values less than (MAXVALUE)
+) ;
+​
+optimize table partTbl ;
+
+-- 파티션 삭제
+alter table DATETIME_DB_PYD_PARTITISON drop partition part3 ;
+​
+-- 파티션 적용인데 왜인지 안됨
+optimize table DATETIME_DB_PYD_PARTITISON ;

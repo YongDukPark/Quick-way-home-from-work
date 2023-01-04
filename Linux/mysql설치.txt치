@@ -107,3 +107,62 @@
 	2. whereis mysql
 	
 </설치>
+
+<계정 관련>
+1. 계정 권한이 있는 PC의 ip 주소를 통해서만 접근 허용
+계정 생성
+create user geoseong@'192.168.0.74' identified by 'Password0000!';
+create user MYpyd@'192.168.0.74' identified by 'Password0000!';
+--만든다 유저   id     @ 주소                           
+--사용자 추가시 뒤에 
+or
+create user root@'%' identified by 'Password0000!';
+GRANT all ON .* TO 'root'@'192.168.0.74';
+
+GRANT all ON PYDsql.* TO 'PYDsql'@'192.168.0.74' identified by 'Password0000!' with grant option;
+
+
+
+
+create user PYDsql3@'%' identified by 'Password0000!';
+GRANT all ON PYDsql.* TO 'PYDsql3'@'%' identified by 'Password0000!' with grant option;
+
+
+--update user set host = '192.168.1.2' where user ='root' and host='192.168.1.%';
+
+flush privileges;
+
+
+GRANT all ON geoseong.* TO 'geoseong'@'192.168.0.74';
+
+접속방법
+mysql -ugeoseong -h192.168.0.74 -pPassword0000!
+
+</계정 관련>
+
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'
+
+grant all privileges on *.* to ‘root’@‘%’ identified by 'Password0000!';
+
+GRANT ALL PRIVILEGES ON *.* to 'root'@'%' IDENTIFIED BY 'Password0000!';
+
+create user root@localhost identified by 'Password0000!';
+
+
+
+
+
+
+create user MYpyd@'%' identified by 'Password0000!';
+create database PYDBASE default character set utf8;
+grant all privileges on PYDBASE.* to 'MYpyd'@'%';
+						데이터베이스
+						
+grant all privileges on *.* to 'MYpyd'@'%';
+						데이터베이스
+						
+이렇게 해도 됨
+
+
+flush privileges
