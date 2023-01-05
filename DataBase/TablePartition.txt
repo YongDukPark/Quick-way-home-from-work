@@ -9,8 +9,6 @@
 따라서 리스트 파티션은 MAXVALUE개념이 존재하지 않는다.
 
 
-
-
 CREATE TABLE DATETIME_DB_PYD_PARTITISON(
 	FULL_DATETIME TIMESTAMP NOT NULL,   
 	LOG_YEAR CHAR(4),
@@ -49,6 +47,8 @@ CREATE TABLE DATETIME_DB_PYD_PARTITISON(
 
 -- 데이터 넣기
 insert into DATETIME_DB_PYD_PARTITISON select FULL_DATETIME, LOG_YEAR, LOG_MONTH, LOG_DAY, LOG_HOUR, LOG_MIN, LOG_SEC, MATCH_YN from DATETIME_DB_PYD;
+-- 기본적으로 다른 테이블에 있는 데이터들 그냥 넣는 방식이다.
+
 
 select * from DATETIME_DB_PYD_PARTITISON where FULL_DATETIME >= '2023-01-01 00:00:00' ;
 
@@ -79,9 +79,6 @@ reorganize partition part4, part5 into (
 ) ;
 ​
 optimize table partTbl ;
-
--- 파티션 삭제
-alter table DATETIME_DB_PYD_PARTITISON drop partition part3 ;
 ​
 -- 파티션 적용인데 왜인지 안됨
 optimize table DATETIME_DB_PYD_PARTITISON ;

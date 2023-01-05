@@ -1,0 +1,126 @@
+mysql
+
+접속방법
+
+mysql -uroot -p0000!
+
+테이블 목록 보기
+SHOW TABLES;
+
+데이터 베이스들 보기
+SHOW DATABASES;
+
+유저목록 보기
+SELECT user FROM user;
+
+유저들 권한 보기
+select * from db;
+
+
+
+
+-------------------------------------------------------------------------------------------
+
+[사용자 추가하기]
+
+mysql> create user 유저아이디;
+Query OK, O rows affected (0.07 sec)
+
+[사용자 추가시 패스워드까지 설정]
+
+mysql> create user 유저아이디@localhost identified by '비밀번호';    -> @뒤에 localhost 부분은 로컬에서만 접근이 가능하다는 의미, 외부에서 접근 불가
+Query OK, O rows affected (0.00 sec)
+
+[사용자 추가시 외부에서 접근 가능하도록 설정]
+
+mysql> create user '유저아이디'@'%' identified by '비밀번호';    -> '%' 부분은 localhost 및 외부에서 접근이 가능하다는 의미.
+Query OK, O rows affected (0.09 sec)
+
+[localhost에서만 접근가능하도록 변경]
+
+mysql> insert into user(host,user,password) values ('localhost','유저아이디',password('비밀번호'));
+Query OK, 1 rows affected, 3 warnings (0.06 sec)
+
+[외부에서도 접근가능하도록 변경]
+mysql> insert into user(host,user,password) values ('%','유저아이디',password('비밀번호'));
+Query OK, 1 rows affected, 3 warnings (0.00 sec)
+
+
+[userid 계정에게 test 데이터베이스의 모든 테이블에 select, insert, update 권한부여]
+mysql> grant select, insert, update on test.* to 유저아이디;    -> on 뒤에 test는 데이터베이스를 의미하며, *은 모든테이블을 의미
+Query OK, 0 rows affected (0.00 sec)
+
+[userid 계정에게 모든 데이터베이스의 모든 테이블에 권한부여]
+mysql> grant all privileges on *.* to userid@localhost identified by 'password' with grant option;    
+
+Query OK, 0 rows affected (0.00 sec)
+
+[데이터베이스 추가 및 권한 주기]
+mysql> CREATE DATABASE 데이터베이스명;
+mysql> GRANT ALL privileges ON 데이터베이스명.* TO 유저명@localhost IDENTIFIED BY '유저패스워드';
+mysql> GRANT ALL privileges ON 데이터베이스명.* TO 유저명@127.0.0.1 IDENTIFIED BY '유저패스워드';
+mysql> GRANT ALL privileges ON 데이터베이스명.* TO 유저명@'%' IDENTIFIED BY '유저패스워드';    -> 외부에서 해당DB로 접근가능
+
+[userid 계정의 모든 데이터베이스 사용권한 제거]
+mysql> revoke all on *.* from userid@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+-------------------------------------------------------------------------------------------
+
+[특정 IP에서만 접근 가능하도록 설정]
+mysql> grant all privileges on *.* to '유저아이디'@'115.68.27.76' identified by '비밀번호';  
+Query OK, 0 rows affected (0.00 sec)
+
+[특정 IP대역 에서만 접근 가능하도록 설정]
+mysql> grant all privileges on *.* to '유저아이디'@'115.68.%' identified by '비밀번호';  
+Query OK, 0 rows affected (0.00 sec)
+
+[모든 IP의 접근 허용]
+mysql> grant all privileges on *.* to '유저아이디'@'%' identified by '비밀번호';  
+Query OK, 0 rows affected (0.00 sec)
+
+-------------------------------------------------------------------------------------------
+grant all privileges on *.* to 'root'@'%' identified by 'Password0000!';  
+create user 'root'@'%' identified by 'Password0000!';
+
+
+-----------------------------------------------------------------------------
+
+
+
+[mysql 트러블슈팅]
+mysql> insert into user (host, user, password) values ('%' , '유저아이디', password('비밀번호'));
+ERROR 1364 (HY000): Field 'ssl_cipher' doesn't have a default value        -> 명령어를 잘 입력하였는데도 이처럼 에러가 날경우
+
+mysql> insert into user (Host, User, Password, ssl_cipher, x509_issuer, x509_subject ) values('%','유저아이디',password('비밀번호'),'','','');
+Query OK, 1 row affected (0.00 sec)        -> mysql 의 버전이 높아지면서 보안관련으로 인한 오류입니다.
+
+[mysql 에서 명령어를 사용하였으면 반드시 적용을 시켜줘야합니다]
+mysql> flush privileges;
+
+
+
+
+GRANT ALL privileges ON mysql.* TO ''@'%' IDENTIFIED BY 'Password0000!';
+
+
+insert into user(host,user,authentication_string) values ('%','geoseong',password('Password0000!'));
+
+select host,user,authentication_string from user;
+
+authentication_string 
+
+
+-- 다른 pc에서 접속할수 있게 유저 생성하는 방법
+create user PYDsql@'%' identified by 'Password0000!';
+
+GRANT all ON PYDsql.* TO 'PYDsql'@'%';
+
+
+
+--포트번호 확인하는법
+
+
+
+블락 해제하는법
+flush hosts;
