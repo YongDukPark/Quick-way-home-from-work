@@ -1,5 +1,67 @@
 CentOS8 에서 mariaDB 다운받기
 
+밀고 다시받음
+<참고>
+	https://ansan-survivor.tistory.com/1184
+</참고>
+<mariaDB 관련 라이브러리 제거 명령어>
+	1. 지우기
+	sudo yum -y remove mariadb-libs
+	2. 확인하는 방법 완벽히 지워졌나. 아무것도 안뜨면 잘지워진거임
+	rpm -qa | grep -i mariadb
+</mariaDB 관련 라이브러리 제거 명령어>
+
+<설치>
+	1. yumupdate 진행
+		sudo yum update
+	2. MariaDB 최신버전 설치
+		sudo yum -y install mariadb-server
+	3. 잘 설치되었나 확인
+		rpm -qa | grep -i mariadb
+	4. MariaDB 서비스 가동
+		<시작>
+			systemctl start mariadb
+		</시작>
+		<중지>
+			systemctl stop mariadb
+		</중지>
+		<상태확인>
+			systemctl status mariadb 
+		</상태확인>
+	5. 접속 확인 및 나가기
+		mysql
+		exit
+	6. 시작시 자동 실행 등록
+		sudo systemctl enable mariadb
+	7. MySQL 방화벽 개방
+		firewall-cmd --permanent --add-service=mysql
+		firewall-cmd --reload
+</설치>
+
+<궁금증>
+	<아니 나는 MariaDB를 다운받았는데 왜 MySQL이 이렇게 많이 나오는겨?>
+		MariaDB는 MySQL의 발전된 형태의 대체제로써, GPL v2 라이센스로 유지되고 있고, MariaDB커뮤니티와 MariaDB재단이 주축이 되어 개발되고 있다.
+		
+		이 MariaDB는 현재까지 최신의 MaySQL과 같은 브랜치로부터 릴리즈되며, 대개의 경우 MySQL과 마찬가지로 동작한다. MySQL의 모든 명령어, 인터페이스, 
+		라이브러리와 API가 MariaDB에도 존재한다. 또한 MariaDB로 데이터베이스를 변환할 필요도 없다. 즉, MariaDB는 사실상 MySQL의 완벽한 대체제이다.
+		그리고 보다 많고 훌령한 새로운 기능들을 갖고있다.
+	</아니 나는 MariaDB를 다운받았는데 왜 MySQL이 이렇게 많이 나오는겨?>
+	<알고보면 매우 좋은 친구 그러나 단점도 있음>
+		장점 :
+			이친구는 MySQL이 오라클에 합병된 후 라이센스 문제를 해결하기 위해 나온 오픈소스이다.
+			MySQL과 동일한 소스 기반 C++로 만들어졌고 MySQL과 비교하여 애플리케이션 부분 속도가 약 4~5천배 빠르다고는 한다 체감은 아직 안되지만
+			MySQL이 가진 제품의 기능을 거의 완벽하게 구현 가능하다.
+		단점 :
+			대소문자 구분해줘야한다 ㅎ
+	</알고보면 매우 좋은 친구 그러나 단점도 있음>
+</궁금증>
+
+
+
+
+<밑에꺼 안됨 ..>
+
+/*
 <설치>
 	1. MariaDB 레파지토리 활성화 시전
 	sudo vim /etc/yum.repos.d/mariadb.repo
@@ -61,13 +123,26 @@ CentOS8 에서 mariaDB 다운받기
 	mysql -uroot -p
 	
 </설치>
+*/
 
-<궁금증>
-	<아니 나는 MariaDB를 다운받았는데 왜 MySQL이 이렇게 많이 나오는겨?>
-		MariaDB는 MySQL의 발전된 형태의 대체제로써, GPL v2 라이센스로 유지되고 있고, MariaDB커뮤니티와 MariaDB재단이 주축이 되어 개발되고 있다.
-		
-		이 MariaDB는 현재까지 최신의 MaySQL과 같은 브랜치로부터 릴리즈되며, 대개의 경우 MySQL과 마찬가지로 동작한다. MySQL의 모든 명령어, 인터페이스, 
-		라이브러리와 API가 MariaDB에도 존재한다. 또한 MariaDB로 데이터베이스를 변환할 필요도 없다. 즉, MariaDB는 사실상 MySQL의 완벽한 대체제이다.
-		그리고 보다 많고 훌령한 새로운 기능들을 갖고있다.
-	</아니 나는 MariaDB를 다운받았는데 왜 MySQL이 이렇게 많이 나오는겨?>
-</궁금증>
+
+
+
+CREATE USER '아이디'@'%' IDENTIFIED BY '비밀번호'; 
+
+CREATE USER 'youngriadb'@'%' IDENTIFIED BY 'Password0000!'; 
+
+GRANT ALL PRIVILEGES ON 데이터베이스.* TO '아이디'@'%';
+
+GRANT ALL PRIVILEGES ON youngriabase.* TO 'youngriadb'@'%';
+
+
+CREATE DATABASE youngriabase; 
+
+CREATE USER 'youngriadb'@'%' IDENTIFIED BY 'Password0000!'; 
+
+systemctl start mariadb
+
+systemctl stop mariadb
+
+systemctl status mariadb 
