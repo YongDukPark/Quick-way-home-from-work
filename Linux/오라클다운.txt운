@@ -1,0 +1,225 @@
+CentOS8에서 진행
+oracle 버전 : 11.2.0 버전으로 실행 64bit
+
+
+<설치>
+	<root로 접속>
+		1. 명령어 실행해서 기본적인 패키지들 다운로드 진행 
+		yum install binutils combat-libcap1 combat-libstdc++-33 gcc gcc-c++ glibc glibc-devel ksh libgcc libstdc++ libstdc++-devel libaio libaio-devel make sysstat
+		중간에 설치 동의 여부가 나올시 Y로 진행
+		
+		<※※※※※※>
+			중간에 다운로드가 안되는게 있을경우 버전이 달라 지원을 안하는거며 밑에 있는 install로 다운이 가능함
+			yum -y install compat-libcap1yum -y install libaio-devel
+			yum install -y http://mirror.centos.org/centos/7/os/x86_64/Packages/compat-libcap1-1.10-7.el7.x86_64.rpm
+			이거로 다운 가능
+
+			yum -y install compat-libstdc++-33
+			yum install -y http://mirror.centos.org/centos/7/os/x86_64/Packages/compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm
+			이거로 다운 가능
+		<※※※※※※>
+		
+		2. 그룹 권한 설정 진행
+		groupadd oinstall
+		groupadd dba
+		useradd -G oinstall -G dba oracle
+		passwd oracle
+		
+		3. 커널, 자원제한 설정
+			3-1
+			vi /etc/sysctl.conf 여기로 들어가서
+			
+			fs.aio-max-nr = 1048576
+			fs.file-max = 6815744
+			#kernel.shmall = 2097152
+			#kernel.shmall = 536870912
+			kernel.shmmni = 4096
+			kernel.sem = 250 32000 100 128
+			net.ipv4.ip_local_port_range = 9000 65500
+			net.core.rmem_default = 262144
+			net.core.rmem_max = 4194304
+			netcore.wmem_default = 262144
+			net.core.wmem_max = 1048576
+			
+			해당 내용 최하단에 붙여넣기
+		
+			3-2
+			vi /etc/security/limits.conf
+			
+			oracle soft nproc 2047
+			oracle hard nproc 16384
+			oracle soft nofile 1024
+			oracle hard nofile 65536
+			oracle soft stack 10240
+			
+			해당 내용 최하단에 붙여넣기
+			
+		4. 재부팅 진행
+		reboot
+		
+		5. 오라클에 필요한 환경변수 설정
+		cd /home/oracle
+		
+		vi .bash_profile
+		
+		이걸로도 가능하다.
+		vi /home/oracle/.bash_profile
+		
+		ORACLE_BASE=/u01/app/oracle
+		ORACLE_SID=XE
+		ORACLE_HOME=$ORACLE_BASE/product/11.2.0/xe ORACLE_HOME_LISTNER=$ORACLE_HOME/bin/lsnrctl
+		PATH=$ORACLE_HOME/bin:$PATH
+		export PATH
+		export ORACLE_BASE
+		export ORACLE_SID
+		export ORACLE_HOME
+		export ORACLE_LISTNER
+		export TMP=/tmp
+		export TMPDIR=$TMP
+		
+		해당 내용 최하단에 붙여넣기
+		
+		6. 환경변수 내용 저장!
+		source .bash_profile
+		
+		7. 오라클 설치 진행 > 오라클 설치파일 업로드후 압축해제
+		cd /home/oracle
+		unzip oracle-xe-11.2.0-1.0.x86_64.rpm.zip
+		
+		8. 설치가 완료되면 Disk1 디렉토리가 생성되는데 해당 디렉토리에 들어가서 rpm 명령어 실행해서 설치 진행
+		cd Disk1
+		rpm -Uvh oracle-xe-11.2.0-1.0.x86_64.rpm
+		
+		9. 마지막에 You must run '/etc/init.d/oracle-xe configure' as the root ruser to configure the database.
+		문구가 나왔다면
+		
+		/etc/init.d/oracle-xe configure 이와 같이 명령어 실행하여
+		환경설정 진행 ㅎㅎ
+		저 이거 안했다가 한동안 애를 많이 먹었습니다.
+		여기서는 포트번호, sys계정 패스워드, 제부팅시 바로 실행 여부를 설정할수 있습니다.
+		
+		10. 세부 환경설정
+			10-1 listener 파일 수정
+			cd /u01/app/oracle/product/11.2.0/xe/network/admin
+			vi listener.ora
+			
+			저같은 경우에는 외부에서 접속이 가능하게 만들려고 했기 때문에 LISTENER에 TCP에 HOST만 바꿔줬습니다.
+			설정 후 저장
+			
+			10-2 tnsnames 파일 수정
+			vi tnsnames.ora
+			
+			이도 HOST만 바꿔줬습니다.
+			후 저장
+		
+		11. 오라클 실행 확인
+		lsnrctl 입력후
+		start or status
+		
+		나갈경우에는 컨 c 눌러주시면 됩니다.
+		
+		그리고 추가적으로
+		리스너 종료시에는 lsnrctl stop 이나 
+		lsnrctl 입력후 stop 해주시면 됩니다.
+		
+		마지막 추가사항
+		만약 status 명령어가 먹지 않는다면 
+		오라클 홈 디렉토리에 들어가 source .bash_profile
+		위 명령어로 다시 적용을 시켜주도록 한다.
+	</root로 접속>
+</설치>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<이전 버리기>
+
+
+https://www.oracle.com/kr/database/technologies/oracle-database-software-downloads.html#19c/
+
+오라클 버전에 맞춰서 다운로드 하기
+
+https://download.oracle.com/otn/linux/oracle19c/190000/oracle-database-ee-19c-1.0-1.x86_64.rpm
+나같은경우엔 오라클 19c-1.0-1 64bit 다운받음
+
+yum install -y https://download.oracle.com/otn/linux/oracle19c/190000/oracle-database-ee-19c-1.0-1.x86_64.rpm
+
+
+
+오라클 설치 관련 라이브러리 추가
+
+yum -y install libnsl
+이거는 진행이 됬으나 상단 yum install -y http ~ 이건 진행이 안됬음
+
+
+
+
+/C/Users/dydej/Downloads
+/home/dsm/Oracle19c
+scp /C/Users/dydej/Downloads/LINUX.X64_193000_db_home.zip dsm@192.168.0.74:/home/dsm/Oracle19c
+
+
+scp /C/Users/dydej/Downloads/oracle-xe-11.2.0-1.0.x86_64.rpm.zip dsm@192.168.0.74:/home/oracle/Oracle-xe-11.2.0-1.0x86_64
+
+scp /c/나는/경로/입니다/넘길파일.확장자 dsm@ip주소 /home/나는/경로/하하하/저장할디렉토리
+scp /c/나는/경로/입니다/넘길파일.확장자 dsm@ip주소 /home/dsm/Oracle19c
+
+
+두개 설치가 안됨..
+yum -y install compat-libcap1yum -y install libaio-devel
+
+yum install -y http://mirror.centos.org/centos/7/os/x86_64/Packages/compat-libcap1-1.10-7.el7.x86_64.rpm
+이거로 다운 가능
+
+
+
+yum -y install compat-libstdc++-33
+
+yum install -y http://mirror.centos.org/centos/7/os/x86_64/Packages/compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm
+이거로 다운 가능
+
+해당 패키지들은 RHEL8에서 제거가 되었으나 RHEL7 및CentOS7에는 여전히 존재하기 때문에 이를 설치해주면 된다.
+
+
+
+
+chown -R dsm:dsm /home/dsm
+chmod -R 700 /home/dsm
+
+yum -y groups install "GNOME Desktop"
+
+
+업데이트 하는방법
+yum update
+
+
+</이전 버리기>

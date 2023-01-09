@@ -1,0 +1,94 @@
+리눅스 오라클
+
+넘모 힘들었다.
+
+참고 사이트 https://heekng.tistory.com/86
+
+<리스너 구동하기>
+	<시작>
+		lsnrctl start
+	</시작>
+	
+	<종료>
+		lsnrctl stop
+	</종료>
+	
+	<상태확인>
+		lsnrctl status
+	</상태확인>
+</리스너 구동하기>
+
+
+<접속방법>
+	1. sqlplus (강추) or sqlplus "/as sysdba" or sqlplus 사용자명/암호
+	2. system / password0000
+	3. startup
+</접속방법>
+
+<설치방법>
+	root 계쩡으로 진행
+	
+	
+
+</설치방법>
+
+
+startup pfile=/u01/app/oracle/product/11.2.0/xe/dbs/initXE.ora
+
+<유저생성>
+	create user [id] identified by [pw];
+</유저생성>	create user Youngracle identified by pass0000;
+
+<권한 줬다 뺏기>
+	grant connect, resource, dba to Youngracle;
+	revoke [권한] from [id];
+	ex) revoke connect, resource, dba from Youngracle;
+</권한 줬다 뺏기>
+
+<유저 삭제>
+	drop user [id] cascade;
+</유저 삭제>
+
+<유저 접속>
+	connect 사용자명/암호
+</유저 접속>
+
+<꿀팁 명령어들>
+	<현재 사용자 확인법>
+		show user;
+	</현재 사용자 확인법>
+	
+	<dba 권한으로 조회 유저들 조회>
+		select username from dba_users;
+	</dba 권한으로 조회>
+	
+	<dba 권한 외 다른 권한으로 조회>
+		select username from all_users;
+	</dba 권한 외 다른 권한으로 조회>
+	
+	<현재 접속 중인 DB 확인>
+		select name from v$database;
+	</현재 접속 중인 DB 확인>
+	
+	<SID 확인법>
+		SELECT instance FROM v$thread;
+	</SID 확인법>
+	
+	<ServiceName 확인법>
+		SELECT name FROM v$database;
+	</ServiceName 확인법>
+	
+	<테이블 목록 보기>
+		<현재 계정>
+			SELECT * FROM tab;
+		</현재 계정>
+		<모든 계정>
+			SELECT * FROM all_tables WHERE OWNER = SCOTT;
+		</모든 계정>
+		<특정 조건>
+			SELECT * FROM user_tables;
+		</특정 조건>
+		
+	</테이블 목록 보기>
+	
+</꿀팁 명령어들>

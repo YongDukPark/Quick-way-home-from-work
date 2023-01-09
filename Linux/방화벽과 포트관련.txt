@@ -12,6 +12,9 @@ iptables -nL
 
 1.1 TCP PORT일 경우
 # iptables -I INPUT 1 -p tcp --dport 12345 -j ACCEPT
+or
+firewall-cmd --permanent --zone=public --add-port=1521/tcp
+
 
 1.2 UDP PORT일 경우
 # iptables -I INPUT 1 -p udp --dport 12345 -j ACCEPT
@@ -53,4 +56,7 @@ b) 추가한 규칙으로 삭제
 # /etc/init.d/iptables start
 
 2. 끄기
-# /etc/init.d/iptables stop
+# systemctl stop firewalld
+
+
+systemctl start firewalld

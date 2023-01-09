@@ -7,8 +7,14 @@
 6. 레인지 파티션은 숫자형 연속된 범위를 사용하고
 7. 리스트 파티션은 숫자형 또는 문자형 연속되지 않은 값(지역, 혈액형 등)을 사용한다.
 따라서 리스트 파티션은 MAXVALUE개념이 존재하지 않는다.
+8. MySQL은 파티션 개수는 최대 1,024개 까지 지원
 
+자 이건 키포인트만 알고 쓰면 좋다. 먼저 이자식은 물리적으로 나눠진 테이블을 만드는 놈이여
+그래서 검색할경우 특정 범위에서만 scan을 하기에 속도가 빠를수밖에 없다. 근데 단점도 당연히 있다.
+테이블과 인덱스를 별도로 파티셔닝 하는 건 불가능하다. 그리고 JOIN으로 인한 비용 증가 ..
+하하 .. 까먹고 신나게 JOIN하면 돈이 슝슝 나간다.
 
+-- 1. 예제
 CREATE TABLE DATETIME_DB_PYD_PARTITISON(
 	FULL_DATETIME TIMESTAMP NOT NULL,   
 	LOG_YEAR CHAR(4),
@@ -27,7 +33,7 @@ CREATE TABLE DATETIME_DB_PYD_PARTITISON(
 DROP table DATETIME_DB_PYD_PARTITISON;
 
 
--- 테이블과 파티션 만들기
+-- 2. 예제 테이블과 파티션 만들기
 CREATE TABLE DATETIME_DB_PYD_PARTITISON(
 	FULL_DATETIME TIMESTAMP NOT NULL,   
 	LOG_YEAR CHAR(4),
@@ -44,6 +50,19 @@ CREATE TABLE DATETIME_DB_PYD_PARTITISON(
   partition part4 values less than MAXVALUE
 );
 
+-- 3. 예제 기존 테이블에 넣는 방식
+ALTER TABLE `His_Ai` PARTITION BY RANGE( TO_DAYS(HIS_TIME) ) (
+    PARTITION p20210401 VALUES LESS THAN (TO_DAYS('2021-04-02')),
+    PARTITION p20210402 VALUES LESS THAN (TO_DAYS('2021-04-03')),
+    PARTITION p20210403 VALUES LESS THAN (TO_DAYS('2021-04-04')),
+    PARTITION p20210404 VALUES LESS THAN (TO_DAYS('2021-04-05')),
+    PARTITION p20210426 VALUES LESS THAN (TO_DAYS('2021-04-27')),
+    PARTITION p20210427 VALUES LESS THAN (TO_DAYS('2021-04-28')),
+    PARTITION p20210428 VALUES LESS THAN (TO_DAYS('2021-04-29')),
+    PARTITION p20210429 VALUES LESS THAN (TO_DAYS('2021-04-30')),
+    PARTITION p20210430 VALUES LESS THAN (TO_DAYS('2021-05-01')),
+    PARTITION future VALUES LESS THAN MAXVALUE
+);
 
 -- 데이터 넣기
 insert into DATETIME_DB_PYD_PARTITISON select FULL_DATETIME, LOG_YEAR, LOG_MONTH, LOG_DAY, LOG_HOUR, LOG_MIN, LOG_SEC, MATCH_YN from DATETIME_DB_PYD;
