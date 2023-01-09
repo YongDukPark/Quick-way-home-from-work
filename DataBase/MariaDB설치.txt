@@ -1,0 +1,73 @@
+CentOS8 에서 mariaDB 다운받기
+
+<설치>
+	1. MariaDB 레파지토리 활성화 시전
+	sudo vim /etc/yum.repos.d/mariadb.repo
+	위 명령어 기입후
+	하단 내용 기입
+	
+	# MariaDB 10.5 CentOS repository list - created 2020-12-15 07:13 UTC
+	# http://downloads.mariadb.org/mariadb/repositories/
+	[mariadb]
+	name = MariaDB
+	baseurl = http://yum.mariadb.org/10.5/centos8-amd64
+	module_hotfixes=1
+	gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+	gpgcheck=1
+	
+	이후
+	dnf repolist 
+	해당 명령어로 확인하기
+	
+	2. CentOS8에 MariaDB 설치
+	sudo dnf install MariaDB-server -y
+	해당 명령어를 사용하여 mariaDB 설치하기
+	
+	<※※※만약 MySQL 패키지와 충돌시※※※>
+		한 서버에서 DB를 두개를 쓰는 경우는 얼마나 있을지는 잘 모르겠으나 충돌이 날경우에는
+		yum list installed | grep -i mysql
+		명령어로 리스틀 확인한 이후 
+		yum erase <package-name>
+		형식으로 삭제후 진행하면 된다.
+	</※※※만약 MySQL 패키지와 충돌시※※※>
+	
+	3. MariaDB 시작하고 이후 시스템 시작 중에 자동으로 시작되도록 활성화
+	시작
+	systemctl start mariadb
+	
+	auto start
+	systemctl enable mariadb
+	
+	상태확인
+	systemctl status mariadb 
+	
+	※※※
+	만약 방화벽이 활성화 된 경우 아래와 같은 명령어를 실행하여 방화벽 규칙에 MariaDB를 추가해야함.
+	규칙이 추가되면 방화벽을 다시 로드해야한다.
+	sudo firewall-cmd --permanent --add-service=mysql
+	sudo firewall-cmd --reload
+	※※※
+	
+	4. CentOS8 에서 MariaDB 서버 보안
+	마지막 단계로 보안 MariaDB 설치 스크립트를 실행해야한다. 
+	이 스크립트는 
+	루트 암호 설정, 권한 다시로드, 테스트 데이터베이스 제거, 루트 로그인 허용 안함
+	을 처리한다.
+	
+	sudo mysql_secure_installation
+	후 나오는 응답문은 Y를 해준다.
+	
+	Final. 이제 루트 사용자로 MariaDB에 연결하고 다음 명령어를 실행하여 버전을 확인해보자
+	mysql -uroot -p
+	
+</설치>
+
+<궁금증>
+	<아니 나는 MariaDB를 다운받았는데 왜 MySQL이 이렇게 많이 나오는겨?>
+		MariaDB는 MySQL의 발전된 형태의 대체제로써, GPL v2 라이센스로 유지되고 있고, MariaDB커뮤니티와 MariaDB재단이 주축이 되어 개발되고 있다.
+		
+		이 MariaDB는 현재까지 최신의 MaySQL과 같은 브랜치로부터 릴리즈되며, 대개의 경우 MySQL과 마찬가지로 동작한다. MySQL의 모든 명령어, 인터페이스, 
+		라이브러리와 API가 MariaDB에도 존재한다. 또한 MariaDB로 데이터베이스를 변환할 필요도 없다. 즉, MariaDB는 사실상 MySQL의 완벽한 대체제이다.
+		그리고 보다 많고 훌령한 새로운 기능들을 갖고있다.
+	</아니 나는 MariaDB를 다운받았는데 왜 MySQL이 이렇게 많이 나오는겨?>
+</궁금증>
