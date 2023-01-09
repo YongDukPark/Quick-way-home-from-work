@@ -238,6 +238,16 @@ getconf LONG_BIT
 		-p : 사용자 패스워드 지정
 	</유저 생성>
 	
+	useradd -pAdmin123 maria
+	
+	<유저 목록 조회>
+		grep /bin/bash /etc/passwd
+		
+		or
+		
+		grep /bin/bash /etc/passwd | cut -f1 -d:
+	</유저 목록 조회>
+	
 	<유저 삭제>
 		userdel [옵션] [계정]
 		ex) userdel -rf songgun
@@ -247,6 +257,17 @@ getconf LONG_BIT
 		-r : 계정 삭제 시 모든 정보 삭제
 		보통 -rf를 사용하긴 한다.
 	</유저 삭제>
+	
+	<유저 비밀번호 삭제>
+		root 계정 로그인 후
+		passwd -d (user계정)
+		ex) passwd -d maria
+		
+		<비밀번호 설정>
+			passwd (user계정)
+			ex) passwd maria
+		</비밀번호 설정>
+	</유저 비밀번호 삭제>
 	
 	<유저 수정>
 		usermod [옵션] [인자값] [계정]
@@ -274,5 +295,15 @@ getconf LONG_BIT
 	<그룹(Group) 삭제>
 		groupdel [그룹명]
 	</그룹(Group) 삭제>
+	
+	<유저 sudo 부여>
+		1. root로 들어가기
+		2. vi /etc/sudoers 파일 열기
+		3.
+		유저아이디 ALL=(ALL:ALL) NOPASSWD:ALL		#이거는 실행할때마다 password를 묻지 않겠다는 뜻이다.
+		or
+		유저아이디 ALL=(ALL:ALL) ALL:ALL			#이거는 실행할때마다 password를 물어본다.
+		
+	</유저 sudo 부여>
 </유저, 그룹 관련>
 
