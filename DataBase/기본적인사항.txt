@@ -119,8 +119,7 @@ GRANT all ON PYDsql.* TO 'PYDsql'@'%';
 
 
 --포트번호 확인하는법
-
-
+SHOW GLOBAL VARIABLES LIKE 'PORT';
 
 블락 해제하는법
 flush hosts;
