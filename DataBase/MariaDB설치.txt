@@ -56,6 +56,15 @@ CentOS8 에서 mariaDB 다운받기
 	</알고보면 매우 좋은 친구 그러나 단점도 있음>
 </궁금증>
 
+<사소한 tip>
+	<port 확인>
+		SHOW GLOBAL VARIABLES LIKE 'PORT';
+	<port 확인>
+	<버전 확인>
+		select version()
+	</버전 확인>
+</사소한 tip>
+
 
 
 
