@@ -25,6 +25,9 @@ CentOS8 에서 mariaDB 다운받기
 		<중지>
 			systemctl stop mariadb
 		</중지>
+		<다시시작>
+			systemctl restart mariadb
+		</다시시작>
 		<상태확인>
 			systemctl status mariadb 
 		</상태확인>
@@ -37,6 +40,37 @@ CentOS8 에서 mariaDB 다운받기
 		firewall-cmd --permanent --add-service=mysql
 		firewall-cmd --reload
 </설치>
+
+<옵션>
+	<접속>
+		mysql -u 유저이름 -p
+	</접속>
+
+	<root 비밀번호 변경>
+		/usr/bin/mysqladmin -u root password
+	</root 비밀번호 변경>
+	
+	<계정생성>
+		CREATE USER 'wordpress-user'@'localhost' IDENTIFIED BY 'your_strong_password';
+	</계정생성>
+	
+	<db생성 및 권한 부여>
+		CREATE DATABASE `wordpress-db`;
+		GRANT ALL PRIVILEGES ON `wordpress-db`.* TO "wordpress-user"@"localhost";
+								이 디비의 .*(모든테이블)  이 유저에게        host는 localhost %이걸 적으면 모든 외부접속을 허용하는 거고
+		<특정 IP 접속 허용>								
+			grant all privileges on *.* to '유저아이디'@'115.68.27.76' identified by '비밀번호'; 
+		</특정 IP 접속 허용>
+		<특정 IP대역 접속 허용>
+			이러한 형태로 권한을 주면 된다.
+			grant all privileges on *.* to '유저아이디'@'115.68.%' identified by '비밀번호';  
+		</특정 IP대역 접속 허용>
+	</db생성 및 권한 부여>>
+	
+	<DML 관련 명령어 사용후 GRANT 명령어 사용시 써야하는 명령어>
+		FLUSH PRIVILEGES;
+	</DML 관련 명령어 사용후 GRANT 명령어 사용시 써야하는 명령어>
+</옵션>
 
 <궁금증>
 	<아니 나는 MariaDB를 다운받았는데 왜 MySQL이 이렇게 많이 나오는겨?>
@@ -60,6 +94,9 @@ CentOS8 에서 mariaDB 다운받기
 	<port 확인>
 		SHOW GLOBAL VARIABLES LIKE 'PORT';
 	<port 확인>
+	<port 변경>
+		/etc/my.cnf.d/server.cnf
+	</port 변경>
 	<버전 확인>
 		select version()
 	</버전 확인>
