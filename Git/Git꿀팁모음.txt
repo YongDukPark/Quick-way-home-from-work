@@ -1,0 +1,29 @@
+<git add 취소>
+	<모든파일 취소>
+		git reset
+	</모든파일 취소>
+	<특정파일 취소>
+		git reset 경로명
+	</특정파일 취소>
+	
+</git add 취소>
+
+
+
+
+…or create a new repository on the command line
+
+echo "# TodayLunch" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/YongDukPark/TodayLunch.git
+git push -u origin main
+
+
+…or push an existing repository from the command line
+
+git remote add origin https://github.com/YongDukPark/TodayLunch.git
+git branch -M main
+git push -u origin main
