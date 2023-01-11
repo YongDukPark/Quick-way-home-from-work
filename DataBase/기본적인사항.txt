@@ -61,6 +61,10 @@ mysql> GRANT ALL privileges ON 데이터베이스명.* TO 유저명@localhost ID
 mysql> GRANT ALL privileges ON 데이터베이스명.* TO 유저명@127.0.0.1 IDENTIFIED BY '유저패스워드';
 mysql> GRANT ALL privileges ON 데이터베이스명.* TO 유저명@'%' IDENTIFIED BY '유저패스워드';    -> 외부에서 해당DB로 접근가능
 
+[권한 확인]
+show grants for 'user'@'접속위치';
+
+
 [userid 계정의 모든 데이터베이스 사용권한 제거]
 mysql> revoke all on *.* from userid@localhost;
 Query OK, 0 rows affected (0.00 sec)
