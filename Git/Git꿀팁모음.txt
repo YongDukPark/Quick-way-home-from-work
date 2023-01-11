@@ -1,3 +1,34 @@
+<설정관련>
+	<설정 확인>
+		git config --list
+		
+		이런식으로 key value 형식으로 뽑아낼수 있다.
+		git config user.name
+	</설정 확인>
+	<기본세팅>
+		git config --global user.name "ParkYoungDuk"
+		git config --global user.email "dydejrdms@naver.com"
+	</기본세팅>
+	<alias 세팅 ※ bash 관리자권한으로 실행해야함>
+	
+		※※※bash 관리자권한으로 실행해야함※※※
+
+		1. C:\Program Files\Git\etc
+		2. vi bash.bashrc
+		3. [. /etc/profile.d/aliases.sh] 대괄호 안에 있는 텍스트를 맨밑 
+		shopt -q login_shell || . /etc/profile.d/git-prompt.sh 이 문구 밑에 추가
+		
+		4. C:\Program Files\Git\etc\profile.d
+		5. vi aliases.sh
+		6. [# --show-control-chars: help showing Korean or accented characters] 이 문구 밑에 
+		
+		alias gs='git status'
+		alias aris='cd /c/Users/dydej/Desktop/JavaProject'
+		이런식으로 원하는 형태로 추가
+		exit로 꺼준후 실행시키고 테스트해보기
+	</alias 세팅>
+</설정관련>
+
 <git add 취소>
 	<모든파일 취소>
 		git reset
@@ -7,6 +38,37 @@
 	</특정파일 취소>
 	
 </git add 취소>
+
+<git checkout - 변경내용 취소>
+	git checkout 경로명
+</git checkout - 변경내용 취소>
+
+
+<git ignore 설정>
+	# 확장자가 .a인 파일 무시
+	*.a
+	
+	ex 윗 라인에서 확장자가 .a인 파일은 무시하게 했지만 lib.a는 무시하지 않음
+	!lib.a
+	
+	ex 현재 디렉토리에 있는 TODO파일은 무시하고 subdir/TODO처럼 하위디렉토리에 있는 파일은 무시하지 않음
+	/TODO
+	
+	ex TODO/ 디렉토리에 있는 모든 파일 무시
+	TODO/
+	
+	ex doc/notes.txt 파일은 무시하고 doc/server/arch.txt 파일은 무시하지 않음
+	doc/*.txt
+	
+	ex doc 디렉토리 아래 모든 .pdf 파일 무시
+	doc/**/*.pdf
+	
+	<※※※만약 ignore 적용이 안된다※※※>
+		git rm -r --cached .
+		이거로 캐쉬를 날리고 다시 commit후 진행한다.
+	</※※※만약 ignore 적용이 안된다※※※>
+	
+</git ignore 설정>
 
 
 
