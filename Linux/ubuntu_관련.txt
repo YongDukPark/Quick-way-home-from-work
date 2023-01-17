@@ -240,6 +240,10 @@ getconf LONG_BIT
 	
 	useradd -pAdmin123 maria
 	
+	useradd mysql
+	
+	한번에 하면 오류가 생기는 이슈가 있다.
+	
 	<유저 목록 조회>
 		grep /bin/bash /etc/passwd
 		
@@ -300,6 +304,11 @@ getconf LONG_BIT
 		1. root로 들어가기
 		2. vi /etc/sudoers 파일 열기
 		3.
+		## The COMMANDS section may have other options added to it.
+		##
+		## Allow root to run any commands anywhere
+		밑에
+		
 		유저아이디 ALL=(ALL:ALL) NOPASSWD:ALL		#이거는 실행할때마다 password를 묻지 않겠다는 뜻이다.
 		or
 		유저아이디 ALL=(ALL:ALL) ALL:ALL			#이거는 실행할때마다 password를 물어본다.
@@ -307,3 +316,25 @@ getconf LONG_BIT
 	</유저 sudo 부여>
 </유저, 그룹 관련>
 
+
+<CentOS8 시스템, 하드웨어 시간 조정>
+	시스템 시간 확인
+	date
+	
+	하드웨어 시간 확인
+	hwclock
+	
+	시스템 시간 조정
+		시스템 시간 1일 빼기
+		sudo date --set='+1 day'
+		시스템 시간 3시간 추가
+		sudo date --set='+3 hour'
+		시스템 시간 7분 추가
+		sudo date --set='+7 minutes' 
+		
+	시스템 시간을 가져와서 하드웨어 시간 맞추기
+	sudo hwclock --systohc
+	
+	하드웨어 시간을 가져와서 시스템 시간에 맞추기
+	sudo hwclock -r
+<CentOS8 시스템, 하드웨어 시간 조정>

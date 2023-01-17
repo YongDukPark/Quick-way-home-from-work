@@ -42,3 +42,24 @@ mysql
 <최근 데이터 하나 가져오기>
 	SELECT * FROM "TABLE NAME" ORDER BY "COLUMN NAME" DESC LIMIT 1
 </최근 데이터 하나 가져오기>
+
+<테이블 인코딩 이슈 발생시 인코딩 방식 교체>
+	ALTER TABLE 테이블명 convert to charset UTF8
+</테이블 인코딩 이슈 발생시 인코딩 방식 교체>
+
+
+MariaDB
+
+<시퀀스 생성하는 방법>
+	CREATE SEQUENCE 		--생성 시퀀스
+		TEST_SEQ 			--시퀀스명 
+		START 				--시작한다
+		WITH 1 				--1부터
+		INCREMENT BY 1;		--1씩 증가하며
+</시퀀스 생성하는 방법>
+
+<table 인코딩 방식 변경하는 방법>
+	ALTER TABLE 테이블명 convert to charset UTF8
+</table 인코딩 방식 변경하는 방법>
+
+

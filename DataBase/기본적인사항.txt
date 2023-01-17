@@ -16,6 +16,8 @@ SELECT user FROM user;
 유저들 권한 보기
 select * from db;
 
+-------------------------------------------------------------------------------------------
+
 
 
 
@@ -64,6 +66,9 @@ mysql> GRANT ALL privileges ON 데이터베이스명.* TO 유저명@'%' IDENTIFI
 [권한 확인]
 show grants for 'user'@'접속위치';
 
+마리아디비 접속용도로 똑같은 계정 localhost용도로 하나 만들었다.
+create user youngriadb@localhost identified by 'Password0000!';
+GRANT ALL privileges ON youngriabase.* TO youngriadb@localhost IDENTIFIED BY 'Password0000!';
 
 [userid 계정의 모든 데이터베이스 사용권한 제거]
 mysql> revoke all on *.* from userid@localhost;
