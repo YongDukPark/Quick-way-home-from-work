@@ -70,7 +70,15 @@
 	
 </git ignore 설정>
 
-
+<git 레파지토리의 파일 삭제>
+	1. 
+	git url로 들어가서 파일 delete시키기
+	
+	2. 
+	git rm --cached -r 폴더/파일명
+	
+	여기서 --cahed 명령어를 안붙이게 되면 레파지토리와 내 디렉토리의 파일이 둘다 날라가게 된다.
+</git 레파지토리의 파일 삭제>
 
 
 …or create a new repository on the command line
