@@ -28,7 +28,9 @@
 		exit로 꺼준후 실행시키고 테스트해보기
 	</alias 세팅>
 </설정관련>
-
+<git 파일들 다른컴터에서 가져오기>
+	git clone [git url 가져오기]
+</git 파일들 다른컴터에서 가져오기>
 <git add 취소>
 	<모든파일 취소>
 		git reset
