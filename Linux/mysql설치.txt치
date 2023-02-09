@@ -1,29 +1,3 @@
-<설치 실패>  
-	설치할 디렉토리 진입
-	cd /usr/local/sr
-
-	my sql 설치
-	218  wget http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.28.tar.gz
-
-	파일 실행
-	221  tar xzvf mysql-5.6.28.tar.gz
-
-	디렉토리 진입
-	223  cd mysql-5.6.28
-
-	그룹 생성
-	230  groupadd testmysql
-
-	그룹기반 시스템 로그인이 불가하며 홈디렉터리를 제외
-	-- 하여 mysql 계정 생성
-	233  useradd -g testmysql -M -s /bin/false testmysql
-
-	mysql 설치에 필요한 필수 패키지 사전 설치 하려는데 이게 왜 안되는겨
-	234  yum install -y cmake bison gcc gcc-c++ ncurses-deve
-</설치 실패>
-
-
-
 <설치 - CentOS8 기준>
 	1. 최하단 디렉토리로 가서 아래 명령어 실행 
 	sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el8-4.noarch.rpm

@@ -338,3 +338,66 @@ getconf LONG_BIT
 	하드웨어 시간을 가져와서 시스템 시간에 맞추기
 	sudo hwclock -r
 <CentOS8 시스템, 하드웨어 시간 조정>
+
+※ cpu 코어수
+명령어 1 > cat /proc/cpuinfo
+명령어 2 > grep -c processor /proc/cpuinfo
+1은 모든 정보를 알려주고
+2는 1중 processor 코어수만 알려준다.
+
+명령어 3 > cat /proc/cpuinfo | grep processor
+코어 갯수만큼 0부터 나온다.
+
+※ 디스크용량 확인
+명령어 1 GB 단위 > df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum/1024/1024 " GB" }'
+전체 용량을 확인 가능하다 내 centOS8 기준으로는
+320.832 GB return 되었다.
+
+명령어 2 KB 단위 > df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum " KB" }'
+				
+<번외>
+	전체 사용량
+		명령어 KB > df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum " KB" }'
+		명령어 GB > df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum/1024/1024 " GB" }'
+	전체 남은 용량
+		명령어 KB > df -P | grep -v ^Filesystem | awk '{sum += $4} END { print sum " KB" }'
+		명령어 GB > df -P | grep -v ^Filesystem | awk '{sum += $4} END { print sum/1024/1024 " GB" }'
+
+	전체 사용률
+		DISK_TOTAL=`df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum; }'`
+		DISK_USED=`df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum; }'`
+		DISK_PER=`echo "100*$DISK_USED/$DISK_TOTAL" | bc -l`
+		echo "$DISK_PER %"
+</번외>
+
+※ OS 버전
+신구대리님 pic 1 > cat /etc/*release*
+신구대리님 pic 2 (커널정보 확인)> uname -a
+이거로 보다 정확한 정보를 확인할수 있고  CentOS8.5.2111(4.18.0-348.7.1.el8_5.x86_64)  이런식으로 2개를 조합해서 보다 정확하게 기재해야한다.
+
+
+명령어 1 > cat /etc/redhat-release
+
+
+※ 물리 메모리
+명령어 1 > free -h
+tip > 
+-h 제일 보기좋은 형태(기가바이트 베이스) -m 메가바이트 단위 -g 기가바이트 단위 -k 킬로 바이트 단위 -l 최고 최저 메모리 상황을 구분하여 출력
+cat /proc/meminfo | grep MemTotal 이런 명령어로 KB로도 확인 가능
+
+※ JVM 메모리 > 이건 ntas에서 잡아먹고있는 메모리를 기재해야한다.
+/home/dsm/DataSyncManager/ntasserver/config/Daemon.xml 파일에 vmOption 쪽에 있다 맨밑에 있다.
+config 에 데몬.xml에서 설정된 값을 가져오면 된다 최하단에 셋팅되어있다.
+
+
+★여기서 주워가야할 팁은 jvm을 server class로 실행하면 초기 heap size는 메모리의 1/64 이고, 최대 heap size는 1/4까지 늘어난다.
+
+명령어 1 > java -XX:+PrintFlagsFinal -version 2>&1 | egrep -i 'heapsize|metaspacesize'
+위 명령어로 Byte기준으로 알수가 있다.
+
+자바 8 이상에서 가장 추천하는 방식
+명령어 2 > java -XX:+PrintFlagsFinal -version 2>&1 | grep -i -E 'heapsize|metaspacesize|version'
+
+명령어 3 > java -XX:+PrintFlagsFinal -version 2>&1 | grep -i -E 'heapsize|permsize|version'
+
+
