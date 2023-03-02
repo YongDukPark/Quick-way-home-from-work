@@ -1,0 +1,45 @@
+ssh key 사용 접속
+
+1. 키 생성
+$ ssh-keygen -t rsa -b 2048 -C "username@naver.com"
+
+	-t 타입 설정 rsa 타입을 사용한다.
+	-b 암호의 bit수 default 값은 2048이다.
+	-f 저장할 파일 위치와 이름을 지정 가능하다.
+	-C 주석 부분이다.
+
+2. 문구 확인
+Generating public/private rsa key pair.
+Enter file in which to save the key (/c/Users/username/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+
+	이런식으로 문구가 총 4줄 나올거다.
+	-1번줄 키 생성되었다.
+	-2번줄 여기 저장할거다
+	-3번줄 비밀번호 입력 (엔터만 쳐도 된다.)
+	-4번줄 비밀번호 다시 확인
+
+Your identification has been saved in /c/Users/username/.ssh/id_rsa
+Your public key has been saved in /c/Users/username/.ssh/id_rsa.pub
+
+	완료되면 요로콤 나에고 된다.
+
+3. Public Key 복사하기
+
+$ ssh-copy-id userid@192.182.5.877
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/c/Users/userid/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+userid@192.182.5.877's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'userid@192.182.5.877'"
+and check to make sure that only the key(s) you wanted were added.
+
+	- ssh를 이용해 idkey 넘기기
+	- 유저 password 입력하고 넣기
+	- 끝 ㅎ
+
+4. 끝 ㅎㅎ
