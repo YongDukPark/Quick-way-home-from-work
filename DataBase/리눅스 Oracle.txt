@@ -21,7 +21,7 @@
 
 <접속방법>
 	1. sqlplus (강추) or sqlplus "/as sysdba" or sqlplus 사용자명/암호
-	2. system / password0000
+	2. system / password0000		이번에는 0000으로 함
 	3. startup
 </접속방법>
 
@@ -37,13 +37,18 @@ startup pfile=/u01/app/oracle/product/11.2.0/xe/dbs/initXE.ora
 
 <유저생성>
 	create user [id] identified by [pw];
-</유저생성>	create user Youngracle identified by pass0000;
+</유저생성>	create user testracle identified by pass0000;
+
+이번에도 pass0000으로함
+
 
 <권한 줬다 뺏기>
 	grant connect, resource, dba to Youngracle;
 	revoke [권한] from [id];
 	ex) revoke connect, resource, dba from Youngracle;
 </권한 줬다 뺏기>
+
+
 
 <유저 삭제>
 	drop user [id] cascade;
