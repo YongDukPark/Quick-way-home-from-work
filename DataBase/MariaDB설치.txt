@@ -189,6 +189,10 @@ GRANT ALL PRIVILEGES ON 데이터베이스.* TO '아이디'@'%';
 
 GRANT ALL PRIVILEGES ON youngriabase.* TO 'youngriadb'@'%';
 
+-- root 외부접속 허용
+grant all privileges on *.* to 'root'@'%'identified by '비밀번호';
+
+
 
 CREATE DATABASE youngriabase; 
 

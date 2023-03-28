@@ -16,8 +16,11 @@ or
 firewall-cmd --permanent --zone=public --add-port=1521/tcp
 
 
-1.2 UDP PORT일 경우
+※※※※추천 1.2 UDP PORT일 경우
 --포트 여는 방법이다 이거 꼭 숙지좀하자 친구야
+※ Input 은 서버로 들어오는거 Output은 밖으로 내보내는거
+
+# iptables -I INPUT 1 -p tcp --dport 9002 -j ACCEPT
 # iptables -I OUTPUT 1 -p tcp --dport 9002 -j ACCEPT
 
 -I: 새로운 규칙을 추가한다.
@@ -49,6 +52,7 @@ TCP에서는 스트리밍 비디오의 점 하나의 데이터를 받지 못하�
 대부분 소프트웨어에서는 TCP의 오류 수정 기능이 필요하나 일부 응용프로그램은 UDP의 속도와 오버헤드를 줄일 필요가 있따.
 네트워크 관리자나 소프트웨어 개발자가 아니라면 너무 신경 쓰지 않아도 상관없다.
 라우터나 방화벽 소프트웨어를 구성 중 소프트웨어가 TCP 또는 UDP를 사용하는지를 확실하지 않으면 TCP 및 UDP에 같은 규칙을 적용하면 된다.
+
 
 
 

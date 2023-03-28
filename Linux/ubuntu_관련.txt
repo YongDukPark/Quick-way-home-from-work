@@ -201,6 +201,21 @@ firewall-cmd --reload
 -- 사용 가능한 모든 서비스/포트 번호 출력
 firewall-cmd --list-all
 
+1. 켜기
+systemctl start firewalld
+
+--# /etc/init.d/iptables start
+
+2. 끄기
+systemctl stop firewalld
+
+3. 상태확인
+systemctl status firewalld
+
+4. 서버 시작시 자동시작
+systemctl enable firewalld
+
+
 -- 일반적인 커널에 대한 정보
 -- Linux ubuntu 만 되고있음
 uname -a
@@ -227,10 +242,14 @@ getconf LONG_BIT
 </ip주소 확인>
 
 <유저, 그룹 관련>
+	<유저 리스트>
+		※useradd로 생성된 유저들 리스트를 확인할때 사용된다.
+		grep /bin/bash /etc/passwd
+	</유저 리스트>
 	<유저 생성>
 		useradd [옵션] [인자값] [계정]박용덕유저
-		ex) useradd park
-		
+		ex1) useradd park
+		ex2) passwd [유저명]
 		--옵션
 		-u : 사용자 uid 지정
 		-g : 사용자 그룹 지정
@@ -238,11 +257,8 @@ getconf LONG_BIT
 		-p : 사용자 패스워드 지정
 	</유저 생성>
 	
-	useradd -pAdmin123 maria
-	
-	useradd mysql
-	
-	한번에 하면 오류가 생기는 이슈가 있다.
+	useradd [유저명]
+	passwd [유저명]
 	
 	<유저 목록 조회>
 		grep /bin/bash /etc/passwd
@@ -260,6 +276,9 @@ getconf LONG_BIT
 		-f : 강제 삭제
 		-r : 계정 삭제 시 모든 정보 삭제
 		보통 -rf를 사용하긴 한다.
+		
+		++ 사용자 소유 파일들 삭제하는법
+		sudo killall -u [username]
 	</유저 삭제>
 	
 	<유저 비밀번호 삭제>
@@ -316,6 +335,26 @@ getconf LONG_BIT
 	</유저 sudo 부여>
 </유저, 그룹 관련>
 
+<접속관련>
+	<최근 접속 기록 및 재부팅 기록 확인 가능>
+		last
+	</최근 접속 기록 및 재부팅 기록 확인 가능>
+	<특정 user의 접속기록 확인>
+		last [user]
+	</특정 user의 접속기록 확인>
+	<특정 시간 이전의 접속기록 확인>
+		last -t YYYYMMDDHHMMSS
+	</특정 시간 이전의 접속기록 확인>
+	<접속 시도부터 모든 보안 기록이 남는 파일>
+		cat /var/log/secure
+	</접속 시도부터 모든 보안 기록이 남는 파일>
+	<로그인 성공 내역 보기>
+		cat /var/log/secure | grep Acc
+	</로그인 성공 내역 보기>
+	<로그인 실패 내역 보기>
+		cat /var/log/secure | grep fail
+	</로그인 실패 내역 보기>
+</접속관련>
 
 <CentOS8 시스템, 하드웨어 시간 조정>
 	시스템 시간 확인
