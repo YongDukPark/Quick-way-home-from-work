@@ -1,7 +1,12 @@
 <설치 - CentOS8 기준>
 	1. 최하단 디렉토리로 가서 아래 명령어 실행 
 	sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el8-4.noarch.rpm
-
+		
+		
+		1.오류 확인
+		yum update 또는 dnf install 등의 명령어를 실행 할 때 다음과 같이 오류가 발생한다.
+		Error: Failed to download metadata for repo 'appstream': Cannot prepare internal mirrorlist: No URLs in mirrorlist
+		
 		안될경우 - 그러나 이건 일시적인 해결방법이라 그리 추천하는 방식은 아니다 난 이거로 해결하긴했다.
 		sudo sed -i -e "s|mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-*
 		sudo sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-*
