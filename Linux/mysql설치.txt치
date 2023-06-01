@@ -60,6 +60,13 @@
 	ubuntu 랑 CnetOS6  아니면 이전? 은
 	service mysql ??? (??? 여기 위치에 start, stop, restart, status를 넣어서 사용한다.)
 	
+	※※※※※※접속방법 mysql -ugeoseong -h192.168.0.74 -pPassword0000!※※※※※※
+	※※※※※※접속방법 mysql -ugeoseong -h192.168.0.74 -pPassword0000!※※※※※※
+	※※※※※※접속방법 mysql -ugeoseong -h192.168.0.74 -pPassword0000!※※※※※※
+	※※※※※※접속방법 mysql -ugeoseong -h192.168.0.74 -pPassword0000!※※※※※※
+	※※※※※※접속방법 mysql -ugeoseong -h192.168.0.74 -pPassword0000!※※※※※※
+	
+	
 	6. 초기 비밀번호 확인방법
 	sudo grep 'temporary password' /var/log/mysqld.log
 	이거는 설치할때마다 랜덤하게 생성된다.
@@ -75,6 +82,15 @@
 	 
 	 자세한 내용 참고
 	 https://www.lesstif.com/dbms/mysql-8-password-policy-89555994.html
+	 
+	 만약 위에 내용이 안된다면 아래의 쿼리를 사용한다.
+	 update mysql.user set authentication_string=password('testtest123 변경할 비밀번호') where user='root(아이디)' and Host='localhost(host)';
+	 
+	 flush privileges;
+	 
+	 만약 안되면 밑에 이놈들을 쉘에서 진행해준다.
+	 mysqladmin reload
+     mysqladmin flush-privileges
 	 
 	8. 나가기 
 	exit
@@ -128,8 +144,7 @@ GRANT ALL PRIVILEGES ON *.* to 'root'@'%' IDENTIFIED BY 'Password0000!';
 
 create user root@localhost identified by 'Password0000!';
 
-
-
+GRANT ALL PRIVILEGES ON *.* TO 'MyPYD'@'%'
 
 
 
@@ -145,3 +160,60 @@ grant all privileges on *.* to 'MYpyd'@'%';
 
 
 flush privileges
+
+<root password 잃어버린 바보같은경우>
+	1. 어느날 접속을 하려는데 root password를 암날 백날 쳐봐도 접속이 안된다 ..
+	
+	2. 서비스 중지
+		systemctl stop mysqld 명령어로 mysql을 잠재운다.
+		
+	3. mysqld_safe 실행 (MySQL 안전모드 실행) -> mysqld_safe는 접속정보 없이 로그인을 할 수 있게 실행하는 방법입니다. 또한 &는 백그라운드로 실행한다는 뜻입니다.
+		- 소스 설치시
+			$ /usr/local/mysql/bin/mysqld_safe --skip-grant & 
+		- 패키지 설치시
+			$ mysqld_safe --skip-grant & 
+			
+	4. MySQL 에 로그인한 이후 다시 패스워드를 변경할 수 있습니다.
+		$ mysql -u root mysql
+		
+	5. MySQL root 패스워드 변경 (5.7버전 미만) [mysql 접속한 상태]
+		1. use mysql;
+		2-1. alter user 'root'@'localhost' identified by '변경할 패스워드';
+		or
+		2-2. update mysql.user set authentication_string=password('변경할 패스워드') where user='root' and Host='localhost';
+		3. flush privileges;
+		4. exit
+		
+	6. MySQL 에 다른 방식으로 다시 로그인한다.
+		1. $ mysql -u root -p
+		2. Enter password: (여기에 방금 교체한 비밀번호 입력)
+		
+	5. MySQL root 패스워드 변경 (5.7버전 미만) [mysql 접속한 상태]
+		1. use mysql;
+		2-1. alter user 'root'@'localhost' identified by '변경할 패스워드 다시입력';
+		or
+		2-2. update mysql.user set authentication_string=password('변경할 패스워드 다시입력') where user='root' and Host='localhost';
+		3. flush privileges;
+		4. exit
+		
+	6. MySQL 프로세스 죽이기
+		1. 프로세스 상태확인
+			ps -ef | grep mysqld
+		2. mysqld_safe~~ 프로세스, mysqld --basedir=/usr~~ 프로세스 둘다 죽이기 ++맨밑에 있는녀석은 죽이지 마세요....
+		
+	7. 프로세스가 잘 죽었나 상태확인
+		ps -ef | grep mysqld
+		
+	8. MySQL 가동하기
+		systemctl start mysqld
+		
+	9. MySQL 변경한 password로 접속 테스트
+		1. mysql -u root -p
+		2. Enter password: (위에서 변경한 비밀번호 입력)
+	
+	10. 접속완료~
+		
+	참고 : https://help.iwinv.kr/manual/read.html?idx=88
+	위 내용을 응용하여 적용 다른내용이 있습니다.
+	
+</root password 잃어버린 바보같은경우>
