@@ -116,7 +116,7 @@ GRANT all ON .* TO 'root'@'192.168.0.74';
 
 GRANT all ON PYDsql.* TO 'PYDsql'@'192.168.0.74' identified by 'Password0000!' with grant option;
 
-
+GRANT all ON *.* TO 'root'@'192.168.0.74' identified by 'Password0000!' with grant option;
 
 
 create user PYDsql3@'%' identified by 'Password0000!';
