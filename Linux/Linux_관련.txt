@@ -241,6 +241,20 @@ getconf LONG_BIT
 	hostname -I
 </ip주소 확인>
 
+<찾기 find 명령어>
+	<find 기본형태>
+		$ find [경로] [옵션] [표현식]
+		$ find [PATH] [OPTION] [EXPRESSION]
+	</find 기본형태>
+	<사용 예시 - 현재 위치 에서 bak 확장자로 끝나는 모든 파일 검색>
+		find ./ -name "*.bak"
+	</사용 예시 - 현재 위치 에서 bak 확장자로 끝나는 모든 파일 검색>
+	<모든 폴더를 검색하여 test가 들어간 파일을 찾는다>
+		find / -type f -name "*test*"
+	</모든 폴더를 검색하여 test가 들어간 파일을 찾는다>
+	
+</찾기 find 명령어>
+
 <유저, 그룹 관련>
 	<유저 리스트>
 		※useradd로 생성된 유저들 리스트를 확인할때 사용된다.
@@ -356,59 +370,142 @@ getconf LONG_BIT
 	</로그인 실패 내역 보기>
 </접속관련>
 
-<CentOS8 시스템, 하드웨어 시간 조정>
-	시스템 시간 확인
-	date
-	
-	하드웨어 시간 확인
-	hwclock
-	
-	시스템 시간 조정
+<하드웨어 시간 조정>
+	<시스템 시간 확인>
+		date
+	</시스템 시간 확인>
+	<하드웨어 시간 확인>
+		hwclock
+	</하드웨어 시간 확인>
+	<시스템 시간 조정>
 		시스템 시간 1일 빼기
 		sudo date --set='+1 day'
 		시스템 시간 3시간 추가
 		sudo date --set='+3 hour'
 		시스템 시간 7분 추가
 		sudo date --set='+7 minutes' 
-		
-	시스템 시간을 가져와서 하드웨어 시간 맞추기
-	sudo hwclock --systohc
+	</시스템 시간 조정>	
+	<시스템 시간을 가져와서 하드웨어 시간 맞추기>
+		sudo hwclock --systohc
+	</시스템 시간을 가져와서 하드웨어 시간 맞추기>
+	<하드웨어 시간을 가져와서 시스템 시간에 맞추기>
+		sudo hwclock -r
+	</하드웨어 시간을 가져와서 시스템 시간에 맞추기>
+</하드웨어 시간 조정>
+<CentOS 시스템>
+	<※ cpu 코어수>
+		명령어 1 > cat /proc/cpuinfo
+		명령어 2 > grep -c processor /proc/cpuinfo
+		1은 모든 정보를 알려주고
+		2는 1중 processor 코어수만 알려준다.
+
+		명령어 3 > cat /proc/cpuinfo | grep processor
+		코어 갯수만큼 0부터 나온다.
+	</※ cpu 코어수>
+	<cpu 정보확인>
+		$ cat /proc/cpuinfo
+	</cpu 정보확인>
+	<cpu 상태확인 1>
+		$ top
+		<검나 중요한 tip - 1초마다 cpu 상태확인을 하고싶어요>
+			1. 엔터를 누르면 바로 지금 상태 사용량으로 갱신된다.
+			2. 1초마다 자동 갱신을 하고 싶다면 $ top -d 1 옵션을 사용하면 된다.
+		</검나 중요한 tip - 1초마다 cpu 상태확인을 하고싶어요>
+		<행마다 알려주는 정보>
+			<1행 - 프로세스 시간 간략 요약>
+				top - 19:20:12 : 현재 시스템의 시간
+				up 21:03 : 현재 시스템이 운영중인 총 시간. 21시간째 리눅스를 운영중
+				2 users : 현재 시스템에 접속중인 사용자는 2명
+				load average: 0.06, 0.06, 0.07 : 1분, 5분, 15분 간의 시스템 평균 사용률
+			</1행 - 프로세스 시간 간략 요약>
+			<2행 - 프로세스의 상태>
+				Tasks: 299 total : 현재 실행중인 전체 프로세스는 299개
+				1 running : 실행중 1개
+				290 sleeping : 대기 138개
+				8 stopped : 정지 0개
+				0 zombie : 좀비상태 0개
+			</2행 - 프로세스의 상태>
+			<3행 - CPU 상태>
+				Cpu(s): 0.1%us, 0.0%sy, 0.0%ni, 99.8%id, 0.0%wa, 0.0%hi, 0.0%si, 0.0%st
+				us: 사용자가 사용한 CPU 시간
+				sy: 커널이 사용한 CPU 시간
+				ni: niced 사용자 프로세스를 실행하는 데 소요 된 시간
+				id: 대기시간
+				wa: IO 대기 시간
+				hi: 하드웨어 인터럽트 사용 시간
+				si: 소프트웨어 인터럽트 사용 시간
+				st: 하이퍼 바이저가 다른 프로세서를 처리하는 동안 가상 CPU가 대기하는 시간
+				!tip : 숫자 1키를 누르면 각 cpu 상세 코어마다 목록을 볼수 있음
+			</3행 - CPU 상태>
+			<4행 - 메모리 상태>
+				Mem: 3925.5 total, 429.5 free, 1261.4 used, 2234.5 buff/cache
+				메모리 총 4G,
+				1.2G를 사용 중,
+				0.4G를 추가 사용 가능.
+				2G가 버퍼용/캐쉬 으로 사용중
+			</4행 - 메모리 상태>
+			<5행 - 스왑 메모리 상태>
+				Swap: 1634.2 total, 1632.2 free, 2.0 used, 2373.9 avail Mem- 스왑 공간의 메모리
+			</5행 - 스왑 메모리 상태>
+		</행마다 알려주는 정보>
+		<프로세스 - cpu 사용순서>
+			PR - 우선순위 
+			NI - Nice value(-20~19 사이의 숫자이며 값이 작을수록 우선순위가 높음) 
+			VIRT - 작업에 사용된 가상 메모리 총사용량 
+			RES - 프로세스가 사용하는 실제 메모리양 
+			SHR - 프로세스가 사용하는 공유 메모리양 
+			S - 현재 프로세스의 상태를 나타냄 
+			TIME+ - 프로세스가 시작하여 사용한 CPU시간 
+		</프로세스 - cpu 사용순서>
+	</cpu 상태확인 1>
+	<cpu 상태확인 2>
+		$ lscpu
+	</cpu 상태확인 1>
+	<cpu 관련 추가사항>
+		# CPU 코어 전체 개수
+		$ grep -c processor /proc/cpuinfo
+		> 4  # 현재 PC의 가상 CPU 코어 수는 4개
+
+
+		# 물리 CPU 개수
+		$ grep ^processor /proc/cpuinfo  | wc -l
+		> 4 # 현재 PC의 물리 CPU 수는 4개.
+
+
+		# CPU 당 물리 코어 개수
+		$ grep 'cpu cores' /proc/cpuinfo | tail -1
+		> 4 # 현재 PC의 CPU 당 물리 코어 개수는 4개
+
+
+		# Hyper Threading 여부
+		$ cat /proc/cpuinfo | egrep 'siblings|cpu cores' | head -2
+		> siblings       :    4
+		> cpu cores    :    4
+		# siblings의 값이 cpu cores 값의 2배 라면 Hyper Threading이 활성화 된 것이다.
+	</cpu 관련 추가사항>
 	
-	하드웨어 시간을 가져와서 시스템 시간에 맞추기
-	sudo hwclock -r
-<CentOS8 시스템, 하드웨어 시간 조정>
+	<※ 디스크용량 확인>
+		명령어 1 GB 단위 > df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum/1024/1024 " GB" }'
+		전체 용량을 확인 가능하다 내 centOS8 기준으로는
+		320.832 GB return 되었다.
 
-※ cpu 코어수
-명령어 1 > cat /proc/cpuinfo
-명령어 2 > grep -c processor /proc/cpuinfo
-1은 모든 정보를 알려주고
-2는 1중 processor 코어수만 알려준다.
+		명령어 2 KB 단위 > df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum " KB" }'
+	</※ 디스크용량 확인>			
+	<번외>
+		전체 사용량
+			명령어 KB > df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum " KB" }'
+			명령어 GB > df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum/1024/1024 " GB" }'
+		전체 남은 용량
+			명령어 KB > df -P | grep -v ^Filesystem | awk '{sum += $4} END { print sum " KB" }'
+			명령어 GB > df -P | grep -v ^Filesystem | awk '{sum += $4} END { print sum/1024/1024 " GB" }'
 
-명령어 3 > cat /proc/cpuinfo | grep processor
-코어 갯수만큼 0부터 나온다.
-
-※ 디스크용량 확인
-명령어 1 GB 단위 > df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum/1024/1024 " GB" }'
-전체 용량을 확인 가능하다 내 centOS8 기준으로는
-320.832 GB return 되었다.
-
-명령어 2 KB 단위 > df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum " KB" }'
-				
-<번외>
-	전체 사용량
-		명령어 KB > df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum " KB" }'
-		명령어 GB > df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum/1024/1024 " GB" }'
-	전체 남은 용량
-		명령어 KB > df -P | grep -v ^Filesystem | awk '{sum += $4} END { print sum " KB" }'
-		명령어 GB > df -P | grep -v ^Filesystem | awk '{sum += $4} END { print sum/1024/1024 " GB" }'
-
-	전체 사용률
-		DISK_TOTAL=`df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum; }'`
-		DISK_USED=`df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum; }'`
-		DISK_PER=`echo "100*$DISK_USED/$DISK_TOTAL" | bc -l`
-		echo "$DISK_PER %"
-</번외>
-
+		전체 사용률
+			DISK_TOTAL=`df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum; }'`
+			DISK_USED=`df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum; }'`
+			DISK_PER=`echo "100*$DISK_USED/$DISK_TOTAL" | bc -l`
+			echo "$DISK_PER %"
+	</번외>
+</CentOS 시스템>
 ※ OS 버전
 신구대리님 pic 1 > cat /etc/*release*
 신구대리님 pic 2 (커널정보 확인)> uname -a
