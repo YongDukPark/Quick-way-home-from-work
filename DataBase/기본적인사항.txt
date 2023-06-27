@@ -17,7 +17,13 @@ SELECT user FROM user;
 select * from db;
 
 -------------------------------------------------------------------------------------------
+tibero
 
+[테이블 확인]
+SELECT * FROM ALL_TAB_COMMENTS;
+
+[테이블 상세정보 확인]
+SELECT * FROM ALL_TAB_COLUMNS WHERE TABLE_NAME = '테이블명'; 
 
 
 
@@ -73,6 +79,16 @@ GRANT ALL privileges ON youngriabase.* TO youngriadb@localhost IDENTIFIED BY 'Pa
 [userid 계정의 모든 데이터베이스 사용권한 제거]
 mysql> revoke all on *.* from userid@localhost;
 Query OK, 0 rows affected (0.00 sec)
+
+[log 상태확인]
+mysql> show variables where Variable_name in ('version','log','general_log');
+
+[log 파일 위치확인]
+mysql> show variables like 'general%';
+
+[로그관련 tip 모음집]
+https://conory.com/blog/28267
+https://fliedcat.tistory.com/81
 
 -------------------------------------------------------------------------------------------
 
@@ -151,3 +167,19 @@ WHERE schema_name = "mydb";
 alter database DB이름 character set utf8mb4 collate utf8mb4_unicode_ci;
 
 alter table table이름 convert to character set utf8mb4 collate utf8mb4_unicode_ci;
+
+[Oracle, Tibero nologging]
+nologging 적용
+alter table 테이블명 nologging;
+
+nologging 적용해제
+alter table 테이블명 logging;
+
+nologging 상태 확인하는 쿼리
+select table_name, partitioned, logging, degree
+from user_tables
+order by 1;
+
+nologging 상태로 insert 날리는법
+insert /*+ APPEND */into 테이블명 values ~~
+
