@@ -405,6 +405,9 @@ getconf LONG_BIT
 	<cpu 정보확인>
 		$ cat /proc/cpuinfo
 	</cpu 정보확인>
+	<cpu 사용률 확인>
+		mpstat | tail -1 | awk '{print 100-$NF}'
+	</cpu 사용률 확인>
 	<cpu 상태확인 1>
 		$ top
 		<검나 중요한 tip - 1초마다 cpu 상태확인을 하고싶어요>
