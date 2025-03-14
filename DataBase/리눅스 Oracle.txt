@@ -17,7 +17,7 @@
 		lsnrctl status
 	</상태확인>
 </리스너 구동하기>
-
+CREATE USER tesuser IDENTIFIED BY tesuser;
 
 <접속방법>
 	1. sqlplus (강추) or sqlplus "/as sysdba" or sqlplus 사용자명/암호
@@ -37,17 +37,23 @@ startup pfile=/u01/app/oracle/product/11.2.0/xe/dbs/initXE.ora
 
 <유저생성>
 	create user [id] identified by [pw];
+	
+	※CDB환경에서는 id 앞에 C##을 붙여야한다. (CDB 전체에 걸쳐 존재하며 모든 PDB에 접근 가능한 사용자)
+	create user C##[id] identified by [pw];
 </유저생성>	create user testracle identified by pass0000;
+
+
+create user dsm identified by dsm;
 
 이번에도 pass0000으로함
 
-
+grant connect, resource, dba to C##ktestp;
 <권한 줬다 뺏기>
 	grant connect, resource, dba to Youngracle;
 	revoke [권한] from [id];
 	ex) revoke connect, resource, dba from Youngracle;
 </권한 줬다 뺏기>
-
+grant connect, resource, dba to dsm;
 
 
 <유저 삭제>
