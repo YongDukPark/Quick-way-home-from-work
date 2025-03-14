@@ -44,7 +44,7 @@
 	git checkout 경로명
 </git checkout - 변경내용 취소>
 
-<git ignore 설정>
+<.gitignore 설정>
 	# 확장자가 .a인 파일 무시
 	*.a
 	
@@ -125,3 +125,10 @@ git push -u origin main
 git remote add origin https://github.com/YongDukPark/TodayLunch.git
 git branch -M main
 git push -u origin main
+
+<만약 로컬 디렉토리 위치가 바뀌었을경우>
+	x 0. git init (이건 해당 디렉토리에 .git 디렉토리를 생성하는 과정이다.  .git이란 )
+	1. 해당 디렉토리 들어가기 
+	2. git remote set-url origin https://github.com/YongDukPark/Quick-way-home-from-work.git 이런식으로 경로 설정해주기
+	끝
+</만약 로컬 디렉토리 위치가 바뀌었을경우>

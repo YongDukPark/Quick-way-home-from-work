@@ -1,19 +1,52 @@
-포트열기 순서
+<방화벽 활성화&비활성화>
+	1. 켜기
+	systemctl start firewalld
 
-설정 명령어 iptables를 사용해 포트 열수도 있음
+	--# /etc/init.d/iptables start
 
+	2. 끄기
+	systemctl stop firewalld
 
+	3. 상태확인
+	systemctl status firewalld
 
-방화벽 설정 정보 확인 (root 계정으로 진행해야함)
-iptables -nL
+	4. 서버 시작시 자동시작
+	systemctl enable firewalld
+</방화벽 활성화&비활성화>
 
-1. 특정포트 외부에서 접속할 수 있도록 열기 (외부에서 접속할 수 있도록 포트 OPEN)
-아래는 외부에서 들어오는(INBOUND) TCP포트 12345의 연결을 받아들인다는 규칙을 1번 방화벽 규칙으로 추가한다는 의미이다.
+//★☆제일 쉽고 간단☆★
+<속성강의 포트열고 적용하기>
+	1. 상태확인
+	# systemctl status firewalld
+	만약 죽어있으면
+	# systemctl start firewalld
+	
+	2. 포트열기(8084를 열거임)
+	# firewall-cmd --zone=public --permanent --add-port=8084/tcp
+	
+	3. 적용시키기
+	# firewall-cmd --reload
+	
+	4. 열린포트 확인
+	# firewall-cmd --zone=public --list-all
+</속성강의 포트열고 적용하기>
 
-1.1 TCP PORT일 경우
-# iptables -I INPUT 1 -p tcp --dport 12345 -j ACCEPT
-or
-firewall-cmd --permanent --zone=public --add-port=1521/tcp
+<방화벽 설정 정보 확인 (root 계정으로 진행해야함)>
+	※방화벽이 켜진 상태이어야 하며 상태확인은 systemctl status firewalld 로 할수있다.
+	iptables -nL
+</방화벽 설정 정보 확인 (root 계정으로 진행해야함)>
+
+<1. 특정포트 외부에서 접속할 수 있도록 열기 (외부에서 접속할 수 있도록 포트 OPEN)>
+	아래는 외부에서 들어오는(INBOUND) TCP포트 12345의 연결을 받아들인다는 규칙을 1번 방화벽 규칙으로 추가한다는 의미이다.
+	<TCP PORT일 경우>
+		<Input Output 모두열기>
+			# firewall-cmd --zone=public --permanent  --add-port=12345/tcp
+		<Input Output 모두열기>
+		<tcp 프로토콜 Input 만 열기>
+		# iptables -I INPUT 1 -p tcp --dport 12345 -j ACCEPT
+	</TCP PORT일 경우>
+<1. 특정포트 외부에서 접속할 수 있도록 열기 (외부에서 접속할 수 있도록 포트 OPEN)>
+
 
 
 ※※※※추천 1.2 UDP PORT일 경우
@@ -82,20 +115,4 @@ b) 추가한 규칙으로 삭제
 # service iptables save
 # /etc/init.d/iptables restart
 
-방화벽 활성화&비활성화
-
-1. 켜기
-systemctl start firewalld
-
---# /etc/init.d/iptables start
-
-2. 끄기
-systemctl stop firewalld
-
-3. 상태확인
-systemctl status firewalld
-
-4. 서버 시작시 자동시작
-systemctl enable firewalld
-
-5. 
+ 

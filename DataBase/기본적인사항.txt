@@ -19,6 +19,12 @@ select * from db;
 -------------------------------------------------------------------------------------------
 tibero
 
+[서버가동]
+tbboot
+
+[서버다운]
+tbdown
+
 [테이블 확인]
 SELECT * FROM ALL_TAB_COMMENTS;
 
@@ -30,6 +36,13 @@ SELECT * FROM ALL_TAB_COLUMNS WHERE TABLE_NAME = '테이블명';
 -------------------------------------------------------------------------------------------
 
 Oracle
+
+[서버가동]
+sqlplus "/as sysdba"
+startup
+
+lsnrctl start
+
 
 [기본 캐릭터셋 확인]
 SELECT * FROM nls_database_parameters WHERE parameter LIKE '%CHARACTERSET%';

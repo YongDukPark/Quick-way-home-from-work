@@ -112,7 +112,7 @@ N = shift+n : 이전 문자열 탐색
 %s/[원래문자열]/[바꿀문자열]/[옵션]
 ex) 
 기본 사용법
-:s/못난이/멋쟁이		해석 : 현재 줄에서 첫번째 못난이를 멋쟁이로 바꾼다 하나의 줄에서 해당 문자열을 찾으면 치환하고 끝! 뒤에 똑같은 친구가 있어도 아무런 일이 생기지않음
+:s/못난이/멋쟁이		해석 : 현재 줄에서 첫번명째 못난이를 멋쟁이로 바꾼다 하나의 줄에서 해당 문자열을 찾으면 치환하고 끝! 뒤에 똑같은 친구가 있어도 아무런 일이 생기지않음
 :%s/못난이/멋쟁이		해석 : 모든 각 줄에서 첫번째 못난이를 멋쟁이로 바꾼다 하나의 줄에서 해당 문자열을 찾으면 치환한다. 같은 라인뒤에 똑같은 못난이가 있어도 아무런 일이 생기지않음
 :s/못난이/멋쟁이/g		해석 : g옵션은 해당 라인의 모든 친구들을 바꿔준다. 못난이 > 멋쟁이로	그말은 즉슨 :%s/못난이/멋쟁이/g 이렇게 하면 모든라인에 모든 내용이 바뀐다고 보면 된다.
 :%s/못난이/멋쟁이/cg	해석 : 두가지를 알수있다 c라는 새로운 옵션과 옵션은 여러개를 붙일수 있다. 여기서 나온 c는 변환전 체크를 할수있게 해준다.
@@ -147,8 +147,8 @@ cat 파일명.확장자
 
 
 
--- 서버확인
-서버 확인하는 방법
+-- 프로세스 확인
+프로세스 확인하는 방법
 ps -ef | grep [입력]
 
 ps 이란
@@ -254,6 +254,36 @@ getconf LONG_BIT
 	</모든 폴더를 검색하여 test가 들어간 파일을 찾는다>
 	
 </찾기 find 명령어>
+<압축관련>
+	<zip확장자 형식>
+		unzip 파일명.zip
+	</zip확장자 형식>
+	<tar확장자 형식>
+		먼저 tar에 대해 간단히 알아보면 이놈은 여러개의 파일을 묶거나 풀때 사용하는 놈이다.
+		"테이프 아카이버(Tape ARchiver)"의 앞 글자들을 조합하여 "tar"라는 이름으로 명명
+		https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99A1D43B5C330EC618
+		이미지 주소 참고
+		
+		tar [OPTION...] [FILE]...
+        -f     : 대상 tar 아카이브 지정. (기본 옵션)
+        -c     : tar 아카이브 생성. 기존 아카이브 덮어 쓰기. (파일 묶을 때 사용)
+        -x     : tar 아카이브에서 파일 추출. (파일 풀 때 사용)
+        -v     : 처리되는 과정(파일 정보)을 자세하게 나열.
+        -z     : gzip 압축 적용 옵션.
+        -j     : bzip2 압축 적용 옵션.
+        -t     : tar 아카이브에 포함된 내용 확인.
+        -C     : 대상 디렉토리 경로 지정.
+        -A     : 지정된 파일을 tar 아카이브에 추가.
+        -d     : tar 아카이브와 파일 시스템 간 차이점 검색.
+        -r     : tar 아카이브의 마지막에 파일들 추가.
+        -u     : tar 아카이브의 마지막에 파일들 추가.
+        -k     : tar 아카이브 추출 시, 기존 파일 유지.
+        -U     : tar 아카이브 추출 전, 기존 파일 삭제.
+        -w     : 모든 진행 과정에 대해 확인 요청. (interactive)
+        -e     : 첫 번째 에러 발생 시 중지.
+	</tar확장자 형식>
+</압축관련>
+
 
 <유저, 그룹 관련>
 	<유저 리스트>
@@ -261,7 +291,7 @@ getconf LONG_BIT
 		grep /bin/bash /etc/passwd
 	</유저 리스트>
 	<유저 생성>
-		useradd [옵션] [인자값] [계정]박용덕유저
+		 [옵션] [인자값] [계정]박용덕유저
 		ex1) useradd park
 		ex2) passwd [유저명]
 		--옵션
@@ -332,7 +362,7 @@ getconf LONG_BIT
 	<그룹(Group) 삭제>
 		groupdel [그룹명]
 	</그룹(Group) 삭제>
-	
+	https://archive.mariadb.org/mariadb-10.1/yum/centos7-amd64/
 	<유저 sudo 부여>
 		1. root로 들어가기
 		2. vi /etc/sudoers 파일 열기
@@ -424,8 +454,8 @@ getconf LONG_BIT
 			<2행 - 프로세스의 상태>
 				Tasks: 299 total : 현재 실행중인 전체 프로세스는 299개
 				1 running : 실행중 1개
-				290 sleeping : 대기 138개
-				8 stopped : 정지 0개
+				290 sleeping : 대기 290개
+				8 stopped : 정지 8개
 				0 zombie : 좀비상태 0개
 			</2행 - 프로세스의 상태>
 			<3행 - CPU 상태>
@@ -508,7 +538,33 @@ getconf LONG_BIT
 			DISK_PER=`echo "100*$DISK_USED/$DISK_TOTAL" | bc -l`
 			echo "$DISK_PER %"
 	</번외>
+	<OS 정보확인>
+		<시스템 정보 확인시 사용 명령어>
+			uname
+		</시스템 정보 확인시 사용 명령어>
+		<옵션>
+			-a, –all 모든 시스템 정보를 출력합니다. 단, -p나 -i 정보가 없는 경우 생략합니다.
+			-s, –kernel-name s 옵션은 커널 이름을 출력합니다
+			-n, –nodename 네트워크 호스트네임을 출력합니다.
+			-r, –kernel-release r 옵션은 커널의 릴리스 버전을 출력합니다.
+			-v, –kernel-version 커널 버전을 출력합니다.
+			-m, –machine m 옵션은 시스템의 하드웨어 아키텍처를 출력합니다.
+			-p, –processor 프로세서 타입을 출력합니다. 확인할 수 없는 경우 “unknown”을 출력합니다.
+			-i, –hardware-platform 하드웨어 플랫폼 정보를 출력합니다. 확인할 수 없는 경우 “unknown”을 출력합니다.
+			-o, –operating-system o 옵션은 운영체제 이름을 출력합니다.
+			–help 도움말을 출력하고 종료합니다.
+			–version 버전 정보를 출력하고 종료합니다.
+		</옵션>
+	</OS 정보확인>
 </CentOS 시스템>
+<네트워크 관련>
+	1. /etc/hosts
+	2. /etc/host.conf
+	3. /etc/resolv/conf
+	4. /etc/sysconfig/network
+	5. /etc/sysconfig/network-scripts/ifcfg-eth0
+</네트워크 관련>
+
 ※ OS 버전
 신구대리님 pic 1 > cat /etc/*release*
 신구대리님 pic 2 (커널정보 확인)> uname -a
@@ -538,5 +594,3 @@ config 에 데몬.xml에서 설정된 값을 가져오면 된다 최하단에 �
 명령어 2 > java -XX:+PrintFlagsFinal -version 2>&1 | grep -i -E 'heapsize|metaspacesize|version'
 
 명령어 3 > java -XX:+PrintFlagsFinal -version 2>&1 | grep -i -E 'heapsize|permsize|version'
-
-
